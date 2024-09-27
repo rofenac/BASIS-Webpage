@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <span>Nav Bar</span>
+      </div>
+      <div class="nav-right">
+        <button id="unit-toggle">Fahrenheit/Celsius</button>
+        <input type="text" id="city-search" placeholder="Search for Cities">
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="weather-info">
+      <div class="city-name">
+        <h1 id="city-name">City Name</h1>
+        <p id="date">Date</p>
+        <img id="weather-icon" src="" alt="Current weather icon">
+      </div>
+      <div class="temperature">
+        <h2 id="temp">Temperature</h2>
+        <p id="description">Weather Description</p>
+      </div>
+      <div class="weather-stats">
+        <div>High/Low: <span id="high-low"></span></div>
+        <div>Wind Speed: <span id="wind-speed"></span></div>
+        <div>Rain: <span id="rain"></span></div>
+        <div>Humidity: <span id="humidity"></span></div>
+      </div>
+    </section>
+
+    <section class="forecast">
+      <h3>7 Day Forecast</h3>
+      <div class="forecast-grid" id="forecast-grid">
+        <!-- Forecast items will be dynamically added here -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Footer</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
