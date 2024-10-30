@@ -8,19 +8,26 @@
 </head>
 <body>
   <header>
-    <nav class="navbar">
-      <div class="nav-left">
-        <span>Nav Bar</span>
-      </div>
-      <div class="nav-right">
-        <button id="unit-toggle">Fahrenheit/Celsius</button>
-        <input type="text" id="city-search" placeholder="Search for Cities">
-      </div>
-    </nav>
+    <nav id="navbar">
+      <ul>
+          <li>
+              <h2><a href="index.html">Home</a></h2>
+          </li>
+          <li>
+              <h2><a href="stargazing.html" >Stargazing</a></h2>
+          </li>
+          <li>
+            <button id="unit-toggle">Fahrenheit/Celsius</button>
+          </li>
+          <li>
+            <input type="text" id="city-search" placeholder="Search for Cities">
+          </li>
+      </ul>
+  </nav>
   </header>
 
   <main>
-    <section class="weather-info">
+    <section class="weather-info left">
       <div class="city-name">
         <h1 id="city-name">City Name</h1>
         <p id="date">Date</p>
