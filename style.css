@@ -7,24 +7,64 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
+  width: 80%;
+  margin:auto;
 }
 
-header {
-  background-color: #4CAF50;
-  padding: 10px;
+/* Star of Nav bar*/
+
+#navbar {
+  margin: auto;
+  width: 100%;
+  padding-top: 1em;
 }
 
-.navbar {
+#navbar ul {
+  list-style-type: none;
+  padding-left: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
+  flex-direction: row;
+}
+
+#navbar ul li {
+  flex-basis: 25%;
+  text-align: center;
+  display: block;
+  padding: 0;
+  text-decoration: none;
+  background-color: #333;
+  font-size: 1em;
+  font-weight: bold;
+  border-right: 2px solid #f0f0f0;
+}
+
+#navbar ul li a {
+  text-align: center;
+  display: block;
+  padding: 2% 0;
+  text-decoration: none;
+  background-color: #333;
+  color: #f0f0f0;
+  font-weight: bold;
+}
+
+#navbar ul li a:hover {
+  color: rgb(212, 67, 67);
+}
+
+#unit-toggle {
+  width: 100%;
+  height: 100%;
+  font-size: 1.5em;
 }
 
 #city-search {
-  padding: 5px;
-  font-size: 14px;
+  font-size: 1em;
+  width: 100%;
+  height: 100%;
 }
+
+/* End of Nav bar*/
 
 main {
   display: flex;
@@ -37,7 +77,6 @@ main {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 900px;
   background-color: #e0e0e0;
   padding: 20px;
   border-radius: 8px;
@@ -76,4 +115,9 @@ footer {
   padding: 10px;
   text-align: center;
   margin-top: 20px;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
