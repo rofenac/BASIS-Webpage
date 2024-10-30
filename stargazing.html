@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stargazing in Tacoma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            background-color: #001;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+        /* Earth GIF in top-left corner */
+        .earth-link {
+            position: absolute;
+            top: 300px;
+            left: 400px;
+            width: 80px; /* Larger size for Earth image */
+            height: 80px;
+        }
+        .center-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin-left: 50px; /* Adjusted to create a diagonal offset */
+            margin-top: 80px;
+        }
+        #locationPrompt {
+            font-size: 1.5em;
+            z-index: 2;
+            position: relative;
+        }
+        #checkingConditions {
+            margin-top: 20px;
+            font-size: 1.2em;
+            z-index: 2;
+            display: none;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .star, .shooting-star, .trail {
+            position: absolute;
+            border-radius: 50%;
+        }
+        .star {
+            opacity: 0;
+            background-color: white;
+        }
+        .trail {
+            width: 2px;
+            height: 2px;
+            background-color: rgba(255, 215, 0, 0.8);
+            position: absolute;
+            transition: opacity 0.7s ease-out;
+        }
+        .head {
+            width: 4px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 1);
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Earth Link -->
+    <a href="home.html" class="earth-link">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT96ISzU6BJSyPkCJXeuf969Op9iC-qRebn4A&s" alt="Home" width="100" height="100">
+    </a>
+
+    <!-- Main Content Wrapper -->
+    <div class="center-wrapper">
+        <div id="locationPrompt">
+            <label for="locationInput">Enter your location (max 12 alphanumeric characters):</label><br>
+            <input type="text" id="locationInput" maxlength="12" required>
+            <button id="searchButton">Search</button>
+        </div>
+        <div id="checkingConditions">Checking Stargazing Conditions...</div>
+        <div id="message"></div>
+    </div>
+    <div class="stars" id="stars"></div>
+
+    <script>
+        let starsVisible = false;
+        let starCreationInterval;
+        let shootingStarInterval;
+
+        function isGoodStargazingDay() {
+            return Math.random() < 0.5; // 50% chance of being a good day
+        }
+
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.opacity = 0;
+            document.getElementById('stars').appendChild(star);
+
+            setTimeout(() => {
+                star.style.transition = 'opacity 1s';
+                star.style.opacity = 1;
+                setTimeout(() => {
+                    star.style.opacity = 0;
+                    setTimeout(() => star.remove(), 1000);
+                }, 1000);
+            }, Math.random() * 1000);
+        }
+
+        function createShootingStar() {
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+            const beamSize = 60 + Math.random() * 10;
+            const direction = Math.random() > 0.5 ? 1 : -1;
+            const velocity = 20 + Math.random() * 3;
+
+            for (let i = 0; i < beamSize; i++) {
+                setTimeout(() => {
+                    const trailPart = document.createElement("div");
+                    trailPart.className = 'trail';
+                    trailPart.style.width = '3px';
+                    trailPart.style.height = '2px';
+                    trailPart.style.backgroundColor = 'rgba(255, 215, 0, 0.8)';
+                    trailPart.style.position = 'absolute';
+                    trailPart.style.top = `${startY + i * direction}px`;
+                    trailPart.style.left = `${startX + i * velocity * direction}px`;
+                    trailPart.style.opacity = 0.9;
+
+                    document.body.appendChild(trailPart);
+
+                    setTimeout(() => {
+                        trailPart.style.transition = 'opacity .5s ease-out';
+                        trailPart.style.opacity = 0;
+                        setTimeout(() => trailPart.remove(), 5);
+                    }, i * 5);
+                }, i * 15);
+            }
+        }
+
+        function updateStargazingConditions() {
+            const starsContainer = document.getElementById('stars');
+            const checkingConditions = document.getElementById('checkingConditions');
+            const message = document.getElementById('message');
+
+            checkingConditions.style.display = "block";
+            message.style.display = "none";
+            starsContainer.style.display = "none";
+
+            setTimeout(() => {
+                const goodDay = isGoodStargazingDay();
+                checkingConditions.style.display = "none";
+
+                if (goodDay) {
+                    message.textContent = "Good Day to Stargaze! 🌟";
+                    starsContainer.style.display = "block";
+                    starsVisible = true;
+
+                    starCreationInterval = setInterval(() => {
+                        for (let i = 0; i < 40; i++) {
+                            createStar();
+                        }
+                    }, 200);
+
+                    shootingStarInterval = setInterval(() => {
+                        const shootingStarsCount = Math.floor(Math.random() * 3) + 1;
+                        for (let i = 0; i < shootingStarsCount; i++) {
+                            createShootingStar();
+                        }
+                    }, Math.random() * 3000 + 1000);
+                } else {
+                    message.textContent = "Not a Good Day to Stargaze. ☁️";
+                    starsVisible = false;
+                }
+
+                message.style.display = "block";
+            }, 3000);
+        }
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const locationInput = document.getElementById('locationInput').value;
+            if (locationInput.length > 0 && locationInput.length <= 12) {
+                updateStargazingConditions();
+            } else {
+                alert('Please enter a valid location (max 12 characters).');
+            }
+        });
+    </script>
+</body>
+</html>
