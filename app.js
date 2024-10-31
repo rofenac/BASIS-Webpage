@@ -1,11 +1,11 @@
 // Example weather API call (using OpenWeatherMap API for demonstration)
 // You will need to replace 'YOUR_API_KEY' with your actual API key.
 
-const apiKey = 'YOUR_API_KEY'; // Replace with your weather API key
+const apiKey = '41db8b032208cd83589ccd20529b4a91'; // Replace with your weather API key
 const apiBaseUrl = 'https://api.openweathermap.org/data/2.5/';
 
 // Initial city for demonstration
-let currentCity = 'New York';
+let currentCity = 'Bremerton';
 
 const unitToggle = document.getElementById('unit-toggle');
 const citySearch = document.getElementById('city-search');
