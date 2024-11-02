@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stargazing in Tacoma</title>
     <style>
+        * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        }
 
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            height: 100vh;
             background-color: #001; /* Dark background for a night sky look */
             color: #fff;
             overflow: hidden; /* Prevents scrolling */
@@ -19,44 +23,37 @@
 
         #navbar {
             margin: auto;
-            width: 100%;
-            padding-top: 0.5em;
-            padding-left: 5em;
-            margin-top: 0;
-            padding-bottom: 0;
-            cursor: none;
+            width: 80%;
+            padding-top: 1em;
         }
 
         #navbar ul {
             list-style-type: none;
-            padding-left: 10em;
+            padding-left: 0;
             display: flex;
             flex-direction: row;
          }
 
         #navbar ul li {
-                flex-basis: 20%;  
+                flex-basis: 25%;  
                 text-align: center;
                 display: block;
                 padding: 0;
-                margin: 0;
                 text-decoration: none;
                 background-color: #333;
-                font-size: 0.5em;
+                font-size: 1em;
                 font-weight: bold;
-                border-right: 2px solid #f0f0f0;
+                border-right: 2px solid #001;
          }  
 
         #navbar ul li a {
             text-align: center;
             display: block;
-            padding: 0;
+            padding: 2% 0;
             text-decoration: none;
             background-color: #333;
             color: #f0f0f0;
             font-weight: bold;
-            font-size: 1.5em;
-            cursor: none;
         }
 
         #navbar ul li a:hover {
@@ -197,21 +194,19 @@
 </head>
 
 <body>
-
+<header>
     <!-- Navbar at the top of the page -->
-
-        <nav id="navbar">
-            <ul>
-                <li>
-                    <h2><a href="index.html">Home</a></h2>
-                </li>
-                <li>
-                    <h2><a href="stargazing.html">Stargazing</a></h2>
-                </li>
-            </ul>
-        </nav>
-
-
+    <nav id="navbar">
+        <ul>
+            <li>
+                <h2><a href="index.html">Home</a></h2>
+            </li>
+            <li>
+                <h2><a href="stargazing.html">Stargazing</a></h2>
+            </li>
+        </ul>
+    </nav>
+</header>
     <!-- Main Content Wrapper with search and stats sections -->
     <div class="main-container">
         <!-- Left Section for Search -->
