@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stargazing in Tacoma</title>
     <style>
+        
+    
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -14,11 +16,12 @@
             text-align: center;
             overflow: hidden;
         }
+    
         /* Earth GIF in top-left corner */
         .earth-link {
             position: absolute;
-            top: 300px;
-            left: 400px;
+            top: 100px;
+            left: 200px;
             width: 80px; /* Larger size for Earth image */
             height: 80px;
         }
@@ -29,7 +32,7 @@
             justify-content: center;
             height: 100vh;
             margin-left: 50px; /* Adjusted to create a diagonal offset */
-            margin-top: 80px;
+            margin-top: 0;
         }
         #locationPrompt {
             font-size: 1.5em;
@@ -37,7 +40,7 @@
             position: relative;
         }
         #checkingConditions {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 1.2em;
             z-index: 2;
             display: none;
@@ -66,15 +69,90 @@
             transition: opacity 0.7s ease-out;
         }
         .head {
-            width: 4px;
-            height: 4px;
+            width: 1px;
+            height: 1px;
             background-color: rgba(255, 255, 255, 1);
             position: absolute;
             z-index: 1;
         }
+        #navbar {
+            margin: auto;
+            width: 100%;
+            padding-top: 0.5em;
+            padding-left: 5em;
+            margin-top: 0;
+            padding-bottom: 0;
+        }
+
+        #navbar ul {
+            list-style-type: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: row;
+         }
+
+        #navbar ul li {
+                flex-basis: 15%;  
+                text-align: center;
+                display: block;
+                padding: 0;
+                margin: 0;
+                text-decoration: none;
+                background-color: #333;
+                font-size: 0.5em;
+                font-weight: bold;
+                border-right: 2px solid #f0f0f0;
+         }  
+
+        #navbar ul li a {
+            text-align: center;
+            display: block;
+            padding: 0;
+            text-decoration: none;
+            background-color: #333;
+            color: #f0f0f0;
+            font-weight: bold;
+            font-size: 0.5em;
+        }
+
+        #navbar ul li a:hover {
+            color: rgb(212, 67, 67);
+        }
+
+        #navbar ul li:last-child {
+            border-right: none; /* Removes the border on the last item */
+        }
+
+        .mouse-trail {
+            position: absolute;
+            width: 2px; 
+            height: 2px;
+            background-color: rgba(255, 215, 0, 0.8); /* Semi-transparent white */
+            border-radius: 10%;
+            pointer-events: none; /* Ignore pointer events */
+            transition: opacity 0.5s ease-out;
+        }
+
+        
     </style>
+
+        <header>
+        <nav id="navbar">
+            <ul>
+                <li >
+                    <h2><a href="index.html">Home</a></h2>
+                </li>
+                <li>
+                    <h2><a href="stargazing.html" >Stargazing</a></h2>
+                </li>
+            </ul>   
+        </nav>
+    </header>
+
 </head>
+
 <body>
+
     <!-- Earth Link -->
     <a href="home.html" class="earth-link">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT96ISzU6BJSyPkCJXeuf969Op9iC-qRebn4A&s" alt="Home" width="100" height="100">
@@ -169,6 +247,18 @@
                     message.textContent = "Good Day to Stargaze! 🌟";
                     starsContainer.style.display = "block";
                     starsVisible = true;
+
+                    document.addEventListener('mousemove', function(e) {
+                        let trail = document.createElement('div');
+                        trail.className = 'mouse-trail';
+                        trail.style.left = `${e.pageX}px`;
+                        trail.style.top = `${e.pageY}px`;
+                        document.body.appendChild(trail);
+                        
+                        setTimeout(() => {
+                        trail.remove();
+                            }, 500); // Adjust the time for the trail to disappear
+                    });
 
                     starCreationInterval = setInterval(() => {
                         for (let i = 0; i < 40; i++) {
