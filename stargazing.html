@@ -149,19 +149,6 @@
             opacity: 0;
             background-color: white;
         }
-
-        .trail {
-            width: 2px;
-            height: 2px;
-            background-color: rgba(255, 215, 0, 0.8);
-            position: absolute;
-            z-index: -1;
-            border-radius: 50%;
-        }   
-
-        .shooting-star-head {
-            z-index: -1;
-        }
         
         .clouds {
             position: absolute;
@@ -193,6 +180,43 @@
             100% {
                 transform: translateX(100vw);
                 opacity: 1;
+            }
+        }
+
+        .meteor{
+            position: absolute;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            z-index: -1;        
+        }
+
+        .meteor .meteor-item {
+            position: absolute;
+            top: 50%;
+            right: -500px;
+            width: 800px;
+            height: 4px;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, hsl(218, 82%, 94%) 50%, #144afb 100%);
+            border-radius: 50% 0 50% 0%;
+            pointer-events: none;
+            animation: fall linear infinite;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-100vw) translateY(7.5vh) rotate(-10deg);
+                opacity: 0;
             }
         }
 
@@ -263,16 +287,19 @@
 
     <!-- Stars Background Container -->
     <div class="stars" id="stars"></div>
-
+    <div class= "meteor"  ></div>
     <div class="clouds" ></div>
 
     <script>
-        //let starsVisible = false;
         let starCreationInterval;
-        let shootingStarInterval;
+        let meteorCreationInterval;
+        const MeteorSection = document.querySelector('.meteor');
+        const numberofMeteors = 3;
+        let activeMeteors = 0;
         const cloudsSection = document.querySelector('.clouds');
         const numberOfClouds = 20;
 
+        // Start of cursor function
         const starCursor = document.createElement('div');
         starCursor.classList.add('star-cursor');
         document.body.appendChild(starCursor);
@@ -281,13 +308,42 @@
         document.addEventListener('mousemove', (e) => {
         starCursor.style.left = `${e.pageX}px`;
         starCursor.style.top = `${e.pageY}px`;
-        });                                 
+        }); 
+        //end of cursor                                
 
         /* Checks if it is a good day for stargazing (50% chance) */
         function isGoodStargazingDay() {
             return Math.random() < 0.5;
         }
 
+    //Start of Meteor creation
+        function createMeteor() {
+            if (activeMeteors >= numberofMeteors) {
+                return; // Limits the number of Meteors
+            }
+
+            const Meteor = document.createElement('div');
+            Meteor.classList.add('meteor-item');
+
+            Meteor.style.top = `${Math.random() * 50}%`;
+            Meteor.style.right = '-800px';
+
+            // Random animation duration and delay
+            const fallDuration = Math.random() * 3 + .5;
+            const fallDelay = Math.random() * 1.5;
+            Meteor.style.animationDuration = `${fallDuration}s`;
+            Meteor.style.animationDelay = `${fallDelay}s`;
+
+            MeteorSection.appendChild(Meteor);
+            activeMeteors++
+
+            setTimeout(() => {
+                Meteor.remove();
+                activeMeteors--;
+            }, 1000 + fallDuration * 1000);
+        }
+
+     //Start of cloud creation
         function createCloud() {
             const cloud = document.createElement('div')
             cloud.classList.add('cloud')
@@ -311,8 +367,10 @@
 
             cloudsSection.appendChild(cloud);
         }
+     //End of cloud
 
-        /* Creates a star in a random position on the screen */
+
+     /* Creates a star in a random position on the screen */
         function createStar() {
             const star = document.createElement('div');
             star.className = 'star';
@@ -334,67 +392,10 @@
                 }, 1000);
             }, Math.random() * 1000);
         }
+     //end of star
+        
 
-        /* Creates a shooting star effect */
-        function createShootingStar() {
-            const startX = Math.random() * window.innerWidth * 1;
-            const startY = Math.random() * window.innerHeight * 0.5;
-            const beamSize = 20 + Math.random() * 3;
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            const velocity = 5 + Math.random() * 5;
-
-            // Create the Head of the the Shooting star
-            const head = document.createElement('div')
-            head.className = 'shooting-star-head';
-            head.style.position = 'absolute';
-            head.style.width = '4px';
-            head.style.height = '4px';
-            head.style.backgroundColor = 'rgba(255, 215, 0, 0.8)';
-            head.style.borderRadius = '50%';
-            head.style.top = `${startY}px`;
-            head.style.left = `${startX}px`;
-            head.style.opacity = 1;
-
-            document.getElementById('stars').appendChild(head);
-
-            let headPosition = 0;
-            const headInterval = setInterval(() => {
-                const currentX = startX + headPosition * velocity * direction;
-                const currentY = startY + headPosition * direction;
-
-                //Move the head to the new position
-                head.style.top = `${currentY}px`;
-                head.style.left = `${currentX}px`;
-
-
-                const trailPart = document.createElement("div");
-                trailPart.className = 'trail';
-                trailPart.style.width = '20px';
-                trailPart.style.height = '3px';
-                trailPart.style.backgroundColor = 'rgba(255, 215, 0, 0.8)';
-                trailPart.style.position = 'absolute';
-                trailPart.style.top = `${currentY}px`;
-                trailPart.style.left = `${currentX}px`;
-                trailPart.style.opacity = 0.9;
-                document.getElementById('stars').appendChild(trailPart);
-
-                // Fade out and remove the trail part
-                setTimeout(() => {
-                        trailPart.style.opacity = 0;
-                        setTimeout(() => trailPart.remove(), 100);
-                    }, 50);
-
-                    headPosition += 0.3;
-
-                    // Stop the head movement and clear the interval once it reaches the end
-                    if (headPosition > beamSize) {
-                        clearInterval(headInterval);
-                        head.remove();
-                    }
-                }, 30);
-            }
-
-        /* Updates the stargazing conditions and toggles visibility of stars */
+     /* Updates the stargazing conditions and toggles visibility of stars */
         function updateStargazingConditions() {
             const starsContainer = document.getElementById('stars');
             const checkingConditions = document.getElementById('checkingConditions');
@@ -435,12 +436,7 @@
                         }
                     }, 200);
 
-                    shootingStarInterval = setInterval(() => {
-                        const shootingStarsCount = Math.floor(Math.random() * 5) + 1;
-                        for (let i = 0; i < shootingStarsCount; i++) {
-                            createShootingStar();
-                        }
-                    }, Math.random() * 3000 + 1000);                   
+                    meteorCreationInterval = setInterval(createMeteor, 100);
 
                 } else {
                     message.textContent = "Not a Good Day to Stargaze. ☁️";
@@ -463,8 +459,8 @@
             }, 3000);
         }
 
-        /**
-         * Simulates updating stargazing stats with dummy data
+        /*
+         Simulates updating stargazing stats with dummy data
          */
         function updateStats() {
             document.getElementById('cloudCoverage').textContent = Math.floor(Math.random() * 100);
@@ -491,12 +487,12 @@
 
             // Clear any running intervals
             clearInterval(starCreationInterval);
-            clearInterval(shootingStarInterval);
+            clearInterval(meteorCreationInterval);
 
             // Hide checking conditions message if visible
             const checkingConditions = document.getElementById('checkingConditions');
             checkingConditions.style.display = 'none';
-        }
+         }
 
 
         /**
