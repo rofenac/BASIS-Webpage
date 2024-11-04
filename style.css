@@ -59,7 +59,7 @@ body {
 }
 
 #city-search {
-  font-size: 1em;
+  font-size: 1.5em;
   width: 100%;
   height: 100%;
 }
@@ -83,10 +83,18 @@ main {
 }
 
 .city-name,
-.temperature,
-.weather-stats {
+.weather-stats, .temperature {
   flex: 1;
   text-align: center;
+  padding: 1em;
+}
+
+.temperature {
+  font-size: 1.15em;
+}
+
+.weather-stats {
+  font-size: 1.65em;
 }
 
 .forecast {
