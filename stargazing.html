@@ -10,6 +10,10 @@
         margin: 0;
         padding: 0;
         }
+        
+        header{
+            z-index: 1;
+        }
 
         body {
             font-family: Arial, sans-serif;
@@ -25,6 +29,7 @@
             margin: auto;
             width: 80%;
             padding-top: 1em;
+            z-index: inherit;
         }
 
         #navbar ul {
@@ -54,20 +59,13 @@
             background-color: #333;
             color: #f0f0f0;
             font-weight: bold;
+            cursor: none;
         }
 
+        /* Navbar link hover effect */
         #navbar ul li a:hover {
             color: rgb(212, 67, 67);
-        }
-
-        #navbar ul li:last-child {
-            border-right: none; /* Removes the border on the last item */
-        }
-
-            /* Navbar link hover effect */
-            #navbar ul li a:hover {
-                color: rgb(212, 67, 67);
-            }
+         }
 
         /* Removes the right border from the last navbar item */
         #navbar ul li:last-child {
@@ -80,7 +78,7 @@
             position: relative;
             z-index: 1; /* Ensures the container is above the stars background */
             width: 100%;
-            height: 90vh; /* Takes full viewport height */
+            height:100vh; /* Takes full viewport height */
             background-color: transparent !important;
             padding-top: 1em;
         }
@@ -138,32 +136,65 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 50%;
             z-index: -1; /* Positions stars behind all other elements */
         }
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .star, .shooting-star, .trail {
+
+        .star {
             position: absolute;
             border-radius: 50%;
         }
+
         .star {
             opacity: 0;
             background-color: white;
         }
+
         .trail {
             width: 2px;
             height: 2px;
             background-color: rgba(255, 215, 0, 0.8);
             position: absolute;
-            transition: opacity 0.7s ease-out;
-        }        
+            z-index: -1;
+            border-radius: 50%;
+        }   
+
+        .shooting-star-head {
+            z-index: -1;
+        }
+        
+        .clouds {
+            position: absolute;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            z-index: -1;
+        }
+
+        .cloud {
+            position: absolute;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            filter: blur(60px);
+            opacity: 0;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateX(-1200px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw);
+                opacity: 1;
+            }
+        }
 
         /* Trail effect for shooting stars */
         .mouse-trail {
@@ -233,10 +264,14 @@
     <!-- Stars Background Container -->
     <div class="stars" id="stars"></div>
 
+    <div class="clouds" ></div>
+
     <script>
-        let starsVisible = false;
+        //let starsVisible = false;
         let starCreationInterval;
         let shootingStarInterval;
+        const cloudsSection = document.querySelector('.clouds');
+        const numberOfClouds = 20;
 
         const starCursor = document.createElement('div');
         starCursor.classList.add('star-cursor');
@@ -250,7 +285,31 @@
 
         /* Checks if it is a good day for stargazing (50% chance) */
         function isGoodStargazingDay() {
-            return Math.random() < 1;
+            return Math.random() < 0.5;
+        }
+
+        function createCloud() {
+            const cloud = document.createElement('div')
+            cloud.classList.add('cloud')
+
+            //Random vertical position, only in the top 40% of the container
+            cloud.style.top = `${Math.random() * 40}%`;
+
+            //Random width and height for more variation in shapes
+            const width = Math.random() * 200 + 300; 
+            const height = Math.random() * 50 + 130;
+            cloud.style.width = `${width}px`;
+            cloud.style.height = `${height}px`;
+
+            cloud.style.borderRadius = `${Math.random() * 50 + 50}% ${Math.random() * 50 + 50}% ${Math.random() * 50 + 50}% ${Math.random() * 50 + 50}%`;  
+            
+            // Random animation duration and delay
+            const floatDuration = Math.random() * 50 + 15; // Random duration between 60s and 120s
+            const floatDelay = Math.random() * .2; // Random delay up to 10s
+            cloud.style.animationDuration = `${floatDuration}s`;
+            cloud.style.animationDelay = `${floatDelay}s`;
+
+            cloudsSection.appendChild(cloud);
         }
 
         /* Creates a star in a random position on the screen */
@@ -260,7 +319,7 @@
             const size = Math.random() * 3 + 1;
             star.style.width = `${size}px`;
             star.style.height = `${size}px`;
-            star.style.top = `${Math.random() * 100}vh`;
+            star.style.top = `${Math.random() * 50}vh`;
             star.style.left = `${Math.random() * 100}vw`;
             star.style.opacity = 0;
             document.getElementById('stars').appendChild(star);
@@ -278,36 +337,62 @@
 
         /* Creates a shooting star effect */
         function createShootingStar() {
-            const startX = Math.random() * window.innerWidth;
-            const startY = Math.random() * window.innerHeight;
-            const beamSize = 60 + Math.random() * 10;
+            const startX = Math.random() * window.innerWidth * 1;
+            const startY = Math.random() * window.innerHeight * 0.5;
+            const beamSize = 20 + Math.random() * 3;
             const direction = Math.random() > 0.5 ? 1 : -1;
-            const velocity = 20 + Math.random() * 3;
+            const velocity = 5 + Math.random() * 5;
 
-            /* Generates trail parts for the shooting star */
-            for (let i = 0; i < beamSize; i++) {
+            // Create the Head of the the Shooting star
+            const head = document.createElement('div')
+            head.className = 'shooting-star-head';
+            head.style.position = 'absolute';
+            head.style.width = '4px';
+            head.style.height = '4px';
+            head.style.backgroundColor = 'rgba(255, 215, 0, 0.8)';
+            head.style.borderRadius = '50%';
+            head.style.top = `${startY}px`;
+            head.style.left = `${startX}px`;
+            head.style.opacity = 1;
+
+            document.getElementById('stars').appendChild(head);
+
+            let headPosition = 0;
+            const headInterval = setInterval(() => {
+                const currentX = startX + headPosition * velocity * direction;
+                const currentY = startY + headPosition * direction;
+
+                //Move the head to the new position
+                head.style.top = `${currentY}px`;
+                head.style.left = `${currentX}px`;
+
+
+                const trailPart = document.createElement("div");
+                trailPart.className = 'trail';
+                trailPart.style.width = '20px';
+                trailPart.style.height = '3px';
+                trailPart.style.backgroundColor = 'rgba(255, 215, 0, 0.8)';
+                trailPart.style.position = 'absolute';
+                trailPart.style.top = `${currentY}px`;
+                trailPart.style.left = `${currentX}px`;
+                trailPart.style.opacity = 0.9;
+                document.getElementById('stars').appendChild(trailPart);
+
+                // Fade out and remove the trail part
                 setTimeout(() => {
-                    const trailPart = document.createElement("div");
-                    trailPart.className = 'trail';
-                    trailPart.style.width = '3px';
-                    trailPart.style.height = '2px';
-                    trailPart.style.backgroundColor = 'rgba(255, 215, 0, 0.8)';
-                    trailPart.style.position = 'absolute';
-                    trailPart.style.top = `${startY + i * direction}px`;
-                    trailPart.style.left = `${startX + i * velocity * direction}px`;
-                    trailPart.style.opacity = 0.9;
-
-                    document.body.appendChild(trailPart);
-
-                    /* Fades out and removes the trail part */
-                    setTimeout(() => {
-                        trailPart.style.transition = 'opacity .5s ease-out';
                         trailPart.style.opacity = 0;
-                        setTimeout(() => trailPart.remove(), 5);
-                    }, i * 5);
-                }, i * 15);
+                        setTimeout(() => trailPart.remove(), 100);
+                    }, 50);
+
+                    headPosition += 0.3;
+
+                    // Stop the head movement and clear the interval once it reaches the end
+                    if (headPosition > beamSize) {
+                        clearInterval(headInterval);
+                        head.remove();
+                    }
+                }, 30);
             }
-        }
 
         /* Updates the stargazing conditions and toggles visibility of stars */
         function updateStargazingConditions() {
@@ -330,7 +415,7 @@
                 if (goodDay) {
                     message.textContent = "Good Day to Stargaze! 🌟";
                     starsContainer.style.display = "block"; // Show stars if a good day
-                    starsVisible = true;
+                    //starsVisible = true;
                     
                     document.addEventListener('mousemove', function(e) {
                         let trail = document.createElement('div');
@@ -341,17 +426,17 @@
                         
                         setTimeout(() => {
                         trail.remove();
-                            }, 500); // Adjust the time for the trail to disappear
+                            }, 400); // Adjust the time for the trail to disappear
                     });     
 
                     starCreationInterval = setInterval(() => {
-                        for (let i = 0; i < 40; i++) {
+                        for (let i = 0; i < 20; i++) {
                             createStar();
                         }
                     }, 200);
 
                     shootingStarInterval = setInterval(() => {
-                        const shootingStarsCount = Math.floor(Math.random() * 3) + 1;
+                        const shootingStarsCount = Math.floor(Math.random() * 5) + 1;
                         for (let i = 0; i < shootingStarsCount; i++) {
                             createShootingStar();
                         }
@@ -359,7 +444,18 @@
 
                 } else {
                     message.textContent = "Not a Good Day to Stargaze. ☁️";
-                    starsVisible = false;
+                    starsContainer.style.display = "block"; // Show stars if a good da
+
+                    starCreationInterval = setInterval(() => {
+                        for (let i = 0; i < 10; i++) {
+                            createStar();
+                        }
+                    }, 200);
+                    
+                    for (let i = 0; i < numberOfClouds; i++) {
+                        createCloud();
+                    }
+                   
                 }
 
                 // Show result message
@@ -377,20 +473,48 @@
             document.getElementById('sunsetTime').textContent = '7:30 PM'; // Example sunset time
         }
 
+        function resetStargazingConditions() {
+            // Clear the stars and clouds from the screen
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = ''; // Remove all stars
+            cloudsSection.innerHTML = ''; // Remove all clouds
+
+            // Clear previous messages
+            const message = document.getElementById('message');
+            message.textContent = '';
+
+            // Hide or reset stats display
+            document.getElementById('cloudCoverage').textContent = 'Loading...';
+            document.getElementById('elevation').textContent = 'Loading...';
+            document.getElementById('humidity').textContent = 'Loading...';
+            document.getElementById('sunsetTime').textContent = 'Loading...';
+
+            // Clear any running intervals
+            clearInterval(starCreationInterval);
+            clearInterval(shootingStarInterval);
+
+            // Hide checking conditions message if visible
+            const checkingConditions = document.getElementById('checkingConditions');
+            checkingConditions.style.display = 'none';
+        }
+
+
         /**
          * Adds an event listener to the search button to update conditions and stats
          */
-        document.getElementById('searchButton').addEventListener('click', function() {
+         document.getElementById('searchButton').addEventListener('click', function() {
             const locationInput = document.getElementById('locationInput').value;
 
             // Validate input length
             if (locationInput.length > 0 && locationInput.length <= 12) {
-                updateStargazingConditions(); // Update conditions
-                updateStats(); // Update stats
+                resetStargazingConditions(); // Reset previous results
+                updateStargazingConditions(); // Update conditions for new search
+                updateStats(); // Update stats for new search
             } else {
                 alert('Please enter a valid location (max 12 characters).'); // Alert if input invalid
             }
         });
+
     </script>
 </body>
 </html>
