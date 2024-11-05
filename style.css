@@ -100,7 +100,10 @@ main {
 .forecast {
   margin-top: 20px;
   width: 100%;
-  max-width: 900px;
+  background-color: #e0e0e0;
+  padding: 20px;
+  margin-top: 3em;
+  border-radius: 8px;
 }
 
 .forecast-grid {
