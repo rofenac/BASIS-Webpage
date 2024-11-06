@@ -2,7 +2,6 @@ const cityNameElement = document.getElementById('city-name');
 const tempElement = document.getElementById('temp');
 const highLowElement = document.getElementById('high-low');
 const windSpeedElement = document.getElementById('wind-speed');
-const rainElement = document.getElementById('rain');
 const humidityElement = document.getElementById('humidity');
 const weatherIconElement = document.getElementById('weather-icon');
 const descriptionElement = document.getElementById('description');
@@ -18,13 +17,12 @@ function convertTemp(kelvin, unit) {
 
 // Fetch and display weather data
 function displayWeatherData(data) {
-  const { name, main, weather, wind, rain } = data;
+  const { name, main, weather, wind } = data;
 
   cityNameElement.textContent = name;
   tempElement.textContent = `${convertTemp(main.temp, isFahrenheit ? 'F' : 'C')}°${isFahrenheit ? 'F' : 'C'}`;
   highLowElement.textContent = `${convertTemp(main.temp_max, isFahrenheit ? 'F' : 'C')}° / ${convertTemp(main.temp_min, isFahrenheit ? 'F' : 'C')}°`;
   windSpeedElement.textContent = `${wind.speed} m/s`;
-  rainElement.textContent = rain ? `${rain['1h']} mm` : '0 mm';
   humidityElement.textContent = `${main.humidity}%`;
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;

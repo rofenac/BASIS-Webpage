@@ -1,0 +1,46 @@
+{
+    "coord": {
+        "lon": -122.6326,
+        "lat": 47.5673
+    },
+    "weather": [
+        {
+            "id": 802,
+            "main": "Clouds",
+            "description": "scattered clouds",
+            "icon": "03n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 281.57,
+        "feels_like": 281.57,
+        "temp_min": 279.81,
+        "temp_max": 282.97,
+        "pressure": 1028,
+        "humidity": 89,
+        "sea_level": 1028,
+        "grnd_level": 1018
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 0.45,
+        "deg": 289,
+        "gust": 0.89
+    },
+    "clouds": {
+        "all": 42
+    },
+    "dt": 1730857209,
+    "sys": {
+        "type": 2,
+        "id": 2011426,
+        "country": "US",
+        "sunrise": 1730818887,
+        "sunset": 1730854010
+    },
+    "timezone": -28800,
+    "id": 5788054,
+    "name": "Bremerton",
+    "cod": 200
+}
