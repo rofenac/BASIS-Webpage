@@ -1,0 +1,240 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    }
+    
+    header{
+        z-index: 1;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #001; /* Dark background for a night sky look */
+        color: #fff;
+        overflow: hidden; /* Prevents scrolling */
+        cursor: none;
+        
+    }
+
+    #navbar {
+        margin: auto;
+        width: 80%;
+        padding-top: 1em;
+        z-index: inherit;
+    }
+
+    #navbar ul {
+        list-style-type: none;
+        padding-left: 0;
+        display: flex;
+        flex-direction: row;
+     }
+
+    #navbar ul li {
+            flex-basis: 25%;  
+            text-align: center;
+            display: block;
+            padding: 0;
+            text-decoration: none;
+            background-color: #333;
+            font-size: 1em;
+            font-weight: bold;
+            border-right: 2px solid #001;
+     }  
+
+    #navbar ul li a {
+        text-align: center;
+        display: block;
+        padding: 2% 0;
+        text-decoration: none;
+        background-color: #333;
+        color: #f0f0f0;
+        font-weight: bold;
+        cursor: none;
+    }
+
+    /* Navbar link hover effect */
+    #navbar ul li a:hover {
+        color: rgb(212, 67, 67);
+     }
+
+    /* Removes the right border from the last navbar item */
+    #navbar ul li:last-child {
+        border-right: none;
+    }      
+
+    /* Container that holds both the search and stats sections side by side */
+    .main-container {
+        display: flex; /* Sets up a side-by-side (flex) layout */
+        position: relative;
+        z-index: 1; /* Ensures the container is above the stars background */
+        width: 100%;
+        height:100vh; /* Takes full viewport height */
+        background-color: transparent !important;
+        padding-top: 1em;
+    }
+
+    /* Styling for the left section (search area) */
+    .left-section {
+        flex: 1; /* Takes half of the container width */
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centers content vertically */
+        border-right: 1px solid #444; /* Adds a divider line on the right side */
+        
+
+    }
+
+    /* Styling for the right section (stats display) */
+    .right-section {
+        flex: 1; /* Takes the other half of the container width */
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: left; /* Aligns text to the left */
+
+    }
+
+    /* Styles for individual statistics entries */
+    .stat {
+        margin: 10px 0;
+        font-size: 1.2em;
+    }
+
+    /* Styles for the search prompt label and input */
+    #locationPrompt {
+        font-size: 1.2em;
+        text-align: center; /* Centers the label and input in the left section */
+    }
+
+    /* Styles for "checking conditions" message */
+    #checkingConditions {
+        margin-top: 10px;
+        font-size: 1.2em;
+        display: none; /* Hidden by default; shown during loading */
+        text-align: center;
+    }
+
+    #message {
+        text-align: center;
+    }
+
+    /* Background for the stars and shooting stars */
+    .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        z-index: -1; /* Positions stars behind all other elements */
+    }
+
+    .star {
+        position: absolute;
+        border-radius: 50%;
+    }
+
+    .star {
+        opacity: 0;
+        background-color: white;
+    }
+    
+    .clouds {
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        z-index: -1;
+    }
+
+    .cloud {
+        position: absolute;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        filter: blur(60px);
+        opacity: 0;
+        animation: float linear infinite;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateX(-1200px);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(100vw);
+            opacity: 1;
+        }
+    }
+
+    .meteor{
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        z-index: -1;        
+    }
+
+    .meteor .meteor-item {
+        position: absolute;
+        top: 50%;
+        right: -500px;
+        width: 800px;
+        height: 4px;
+        background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, hsl(218, 82%, 94%) 50%, #144afb 100%);
+        border-radius: 50% 0 50% 0%;
+        pointer-events: none;
+        animation: fall linear infinite;
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
+    }
+
+    @keyframes fall {
+        0% {
+            transform: translateX(0) translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        10% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-100vw) translateY(7.5vh) rotate(-10deg);
+            opacity: 0;
+        }
+    }
+
+    /* Trail effect for shooting stars */
+    .mouse-trail {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background-color: rgba(255, 215, 0, 0.8);
+        border-radius: 10%;
+        pointer-events: none; /* Allows clicks to go through the trail */
+        transition: opacity 0.5s ease-out;
+        z-index: -1;
+    }
+
+    .star-cursor {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(255, 215, 0, 0.8);
+        clip-path: polygon(
+            50% 0%, 61% 35%, 98% 35%, 68% 57%,
+            79% 91%, 50% 70%, 21% 91%, 32% 57%,
+            2% 35%, 39% 35%                
+        );
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+    }
