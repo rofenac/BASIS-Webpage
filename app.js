@@ -36,7 +36,8 @@ function displayWeatherData(data) {
 // Toggle between Fahrenheit and Celsius
 document.getElementById('unit-toggle').addEventListener('click', () => {
   isFahrenheit = !isFahrenheit;
-  fetchWeatherData(); // Re-fetch or re-render with new units
+  const cityName = document.getElementById("city-search").value.trim();
+  fetchWeatherData(cityName); // Re-fetch or re-render with new units
 });
 
 // Event listener for city search bar functionality
