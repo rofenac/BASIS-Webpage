@@ -39,6 +39,26 @@ document.getElementById('unit-toggle').addEventListener('click', () => {
   fetchWeatherData(); // Re-fetch or re-render with new units
 });
 
+// Event listener for city search bar functionality
+document.getElementById("city-search").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    searchCity();
+  }
+});
+
+// Function for the city search bar
+function searchCity() {
+  const cityName = document.getElementById("city-search").value.trim();
+
+  if (cityName === "") {
+    alert("Please enter a city name.");
+    return;
+  }
+
+  fetchWeatherData(cityName);
+}
+
 // Fetch data from OpenWeather API
 async function fetchWeatherData(city = 'Bremerton') {
   const apiKey = '41db8b032208cd83589ccd20529b4a91';
