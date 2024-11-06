@@ -15,6 +15,11 @@ function convertTemp(kelvin, unit) {
     : Math.round(kelvin - 273.15);
 }
 
+// Function to convert windspeed from m/s to mph
+function convertWindSpeed(metricWindSpeed) {
+  return Math.round(metricWindSpeed * 2.23694);
+}
+
 // Fetch and display weather data
 function displayWeatherData(data) {
   const { name, main, weather, wind } = data;
@@ -22,7 +27,7 @@ function displayWeatherData(data) {
   cityNameElement.textContent = name;
   tempElement.textContent = `${convertTemp(main.temp, isFahrenheit ? 'F' : 'C')}°${isFahrenheit ? 'F' : 'C'}`;
   highLowElement.textContent = `${convertTemp(main.temp_max, isFahrenheit ? 'F' : 'C')}° / ${convertTemp(main.temp_min, isFahrenheit ? 'F' : 'C')}°`;
-  windSpeedElement.textContent = `${wind.speed} m/s`;
+  windSpeedElement.textContent = `${convertWindSpeed(wind.speed)} mph`;
   humidityElement.textContent = `${main.humidity}%`;
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
