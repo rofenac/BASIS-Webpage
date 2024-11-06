@@ -68,7 +68,7 @@ function searchCity() {
 
 // Fetch data from OpenWeather API with error handling
 async function fetchWeatherData(city = 'Bremerton') {
-  const apiKey = '41db8b032208cd83589ccd20529b4a91';
+  const apiKey = '38137b56cf796c2682119ac4af83a500';
   try {
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
     
