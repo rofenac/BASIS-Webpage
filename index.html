@@ -20,7 +20,10 @@
             <button id="unit-toggle">Fahrenheit/Celsius</button>
           </li>
           <li>
-            <input type="text" id="city-search" placeholder="Search for Cities">
+            <div id="city-search-container">
+              <input type="text" id="city-search" placeholder="Search for Cities">
+              <p id="error-message"></p> <!-- Error message element added -->
+            </div>
           </li>
       </ul>
   </nav>
@@ -40,7 +43,6 @@
       <div class="weather-stats">
         <div>High/Low: <span id="high-low"></span></div><br>
         <div>Wind Speed: <span id="wind-speed"></span></div><br>
-        <div>Rain: <span id="rain"></span></div><br>
         <div>Humidity: <span id="humidity"></span></div>
       </div>
     </section>

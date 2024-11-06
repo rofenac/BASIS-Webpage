@@ -137,4 +137,7 @@ footer {
   color: red;
   font-size: 0.9em;
   margin-top: 5px;
+  max-width: 100%; 
+  display: block; /* Ensures it appears on a new line below the input */
+  white-space: normal; /* Allow text to wrap to the next line */
 }
