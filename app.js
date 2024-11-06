@@ -6,6 +6,7 @@ const humidityElement = document.getElementById('humidity');
 const weatherIconElement = document.getElementById('weather-icon');
 const descriptionElement = document.getElementById('description');
 const errorMessageElement = document.getElementById('error-message');
+const dateElement = document.getElementById('date');
 
 let isFahrenheit = true; // Default unit
 
@@ -23,7 +24,10 @@ function convertWindSpeed(metricWindSpeed) {
 
 // Fetch and display weather data
 function displayWeatherData(data) {
-  const { name, main, weather, wind } = data;
+  const { name, main, weather, wind, dt } = data;
+
+  const date = new Date(dt * 1000);
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
   cityNameElement.textContent = name;
   tempElement.textContent = `${convertTemp(main.temp, isFahrenheit ? 'F' : 'C')}°${isFahrenheit ? 'F' : 'C'}`;
@@ -32,6 +36,7 @@ function displayWeatherData(data) {
   humidityElement.textContent = `${main.humidity}%`;
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+  dateElement.textContent = (date.toLocaleDateString(undefined, options));
 }
 
 // Toggle between Fahrenheit and Celsius
