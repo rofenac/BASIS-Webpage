@@ -68,7 +68,7 @@ function searchCity() {
 
 // Fetch data from OpenWeather API with error handling
 async function fetchWeatherData(city = 'Bremerton') {
-  const apiKey = '41db8b032208cd83589ccd20529b4a91';
+  const apiKey = '38137b56cf796c2682119ac4af83a500';
   try {
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
     
@@ -96,6 +96,47 @@ async function fetchWeatherData(city = 'Bremerton') {
     console.error("Error fetching weather data:", error);
   }
 }
+
+// Fetch and display the 7-day forecast
+async function getForecast(city) {
+  try {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=38137b56cf796c2682119ac4af83a500`);
+    const data = await response.json();
+
+    // Clear any existing forecast data
+    const forecastGrid = document.querySelector('.forecast-grid');
+    forecastGrid.innerHTML = '';
+
+    // Loop through the 7-day forecast data
+    data.forecast.forecastday.forEach(day => {
+      // Create forecast item container
+      const forecastItem = document.createElement('div');
+      forecastItem.classList.add('forecast-item');
+
+      // Format date
+      const date = new Date(day.date);
+      const options = { weekday: 'short', month: 'short', day: 'numeric' };
+      const formattedDate = date.toLocaleDateString(undefined, options);
+
+      // Add forecast details
+      forecastItem.innerHTML = `
+        <p>${formattedDate}</p>
+        <img src="${day.day.condition.icon}" alt="Weather icon">
+        <p>Max: ${day.day.maxtemp_c}°C / ${day.day.maxtemp_f}°F</p>
+        <p>Min: ${day.day.mintemp_c}°C / ${day.day.mintemp_f}°F</p>
+      `;
+
+      // Append the forecast item to the grid
+      forecastGrid.appendChild(forecastItem);
+    });
+  } catch (error) {
+    console.error("Error fetching forecast:", error);
+  }
+}
+
+// Example usage: Call getForecast with a city name
+getForecast('Tacoma'); // Replace 'Tacoma' with the user's selected city
+
 
 // Initial fetch
 fetchWeatherData();
