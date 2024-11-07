@@ -11,7 +11,7 @@ body {
   margin:auto;
 }
 
-/* Star of Nav bar*/
+/* Start of Nav bar */
 
 #navbar {
   margin: auto;
@@ -64,7 +64,8 @@ body {
   height: 100%;
 }
 
-/* End of Nav bar*/
+/* End of Nav bar */
+/* Start of live weather display */
 
 main {
   display: flex;
@@ -96,6 +97,9 @@ main {
 .weather-stats {
   font-size: 1.65em;
 }
+
+/* End of live weather display */
+/* Start of forecast grid */
 
 .forecast {
   margin-top: 20px;

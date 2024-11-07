@@ -8,7 +8,7 @@ const descriptionElement = document.getElementById('description');
 const errorMessageElement = document.getElementById('error-message');
 const dateElement = document.getElementById('date');
 
-let isFahrenheit = true; // Default unit
+let unit = 'imperial'; // Globally defined unit for the F/C toggle button
 
 // Fetch and display weather data
 function displayWeatherData(data) {
@@ -17,10 +17,13 @@ function displayWeatherData(data) {
   const date = new Date(dt * 1000);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
+  const unitLabel = (unit === 'imperial') ? 'F°' : 'C°';
+  const windSpeedUnit = (unit === 'imperial') ? 'mph' : 'm/s';
+
   cityNameElement.textContent = name;
-  tempElement.textContent = `${Math.round(main.temp)} F°`;
-  highLowElement.textContent = `${Math.round(main.temp_max)} F° / ${Math.round(main.temp_min)} F°`;
-  windSpeedElement.textContent = `${(wind.speed)} mph`;
+  tempElement.textContent = `${Math.round(main.temp)} ${unitLabel}`;
+  highLowElement.textContent = `${Math.round(main.temp_max)} ${unitLabel} / ${Math.round(main.temp_min)} ${unitLabel}`;
+  windSpeedElement.textContent = `${(wind.speed)} ${windSpeedUnit}`;
   humidityElement.textContent = `${main.humidity}%`;
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
@@ -29,7 +32,7 @@ function displayWeatherData(data) {
 
 // Toggle between Fahrenheit and Celsius
 document.getElementById('unit-toggle').addEventListener('click', () => {
-  isFahrenheit = !isFahrenheit;
+  unit = (unit === 'imperial') ? 'metric' : 'imperial';
 
   const cityName = document.getElementById('city-search').value.trim();
   fetchWeatherData(cityName); // Re-fetch or re-render with new units
@@ -59,7 +62,7 @@ function searchCity() {
 async function fetchWeatherData(city = 'Bremerton') {
   const apiKey = '38137b56cf796c2682119ac4af83a500';
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`);
     
     if (!response.ok) {
       // If response is not OK, trigger error message
