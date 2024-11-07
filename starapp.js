@@ -107,6 +107,7 @@ function updateStargazingConditions() {
     const starsContainer = document.getElementById('stars');
     const checkingConditions = document.getElementById('checkingConditions');
     const message = document.getElementById('message');
+    
 
     // Show checking message
     checkingConditions.style.display = "block";
@@ -166,16 +167,6 @@ function updateStargazingConditions() {
     }, 3000);
 }
 
-/*
- Simulates updating stargazing stats with dummy data
- */
-function updateStats() {
-    document.getElementById('cloudCoverage').textContent = Math.floor(Math.random() * 100);
-    document.getElementById('elevation').textContent = 120; // Example elevation
-    document.getElementById('humidity').textContent = Math.floor(Math.random() * 100);
-    document.getElementById('sunsetTime').textContent = '7:30 PM'; // Example sunset time
-}
-
 function resetStargazingConditions() {
     // Clear the stars and clouds from the screen
     const starsContainer = document.getElementById('stars');
@@ -199,21 +190,57 @@ function resetStargazingConditions() {
     // Hide checking conditions message if visible
     const checkingConditions = document.getElementById('checkingConditions');
     checkingConditions.style.display = 'none';
+    
  }
-
 
 /**
  * Adds an event listener to the search button to update conditions and stats
  */
  document.getElementById('searchButton').addEventListener('click', function() {
-    const locationInput = document.getElementById('locationInput').value;
+    const location = document.getElementById('locationInput').value.trim();
+
+    if(!location) {
+        alert("Please enter a location.");
+    }
 
     // Validate input length
-    if (locationInput.length > 0 && locationInput.length <= 12) {
+    if (location.length > 0 && location.length <= 30) {
         resetStargazingConditions(); // Reset previous results
         updateStargazingConditions(); // Update conditions for new search
-        updateStats(); // Update stats for new search
+        fetchWeatherData(location);
+        return location;
     } else {
         alert('Please enter a valid location (max 12 characters).'); // Alert if input invalid
     }
-});
+ })
+// Example weather API call (using OpenWeatherMap API for demonstration)
+// You will need to replace 'YOUR_API_KEY' with your actual API key.
+
+const apiKey = '41db8b032208cd83589ccd20529b4a91'; // Replace with your weather API key
+const apiBaseUrl = 'https://api.openweathermap.org/data/2.5/';
+const city = `${location}`
+
+async function fetchWeatherData(location) {
+    try {
+        const response = await fetch(`${apiBaseUrl}weather?q=${location}&appid=${apiKey}&units=imperial`);
+        const data = await response.json();
+        console.log(response);
+        // Display the raw JSON response in the console
+
+        if (data.cod == 200) { // Check if the location is valid
+            document.getElementById('locationname').textContent = data.name;
+            document.getElementById('description').textContent = data.weather[0].description;
+            document.getElementById('cloudCoverage').textContent = `${data.clouds.all}`;
+            document.getElementById('temp').textContent = data.main.temp
+            document.getElementById('elevation').textContent = data.main.pressure; // Using pressure as a substitute
+            document.getElementById('humidity').textContent = data.main.humidity;
+            document.getElementById('sunsetTime').textContent = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+        } else {
+            console.log("Error:", data.message);
+            alert(`City not found: ${data.message}. Please enter a valid city name.`);
+        }
+    } catch (error) { // This is the catch block
+        console.error("Error fetching data:", error);
+        alert("Failed to retrieve weather data. Please try again later.");
+    }
+}
