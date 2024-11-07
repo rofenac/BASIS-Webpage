@@ -10,29 +10,17 @@ const dateElement = document.getElementById('date');
 
 let isFahrenheit = true; // Default unit
 
-// Function to convert Kelvin to Fahrenheit or Celsius
-function convertTemp(kelvin, unit) {
-  return unit === 'F'
-    ? Math.round((kelvin - 273.15) * 9/5 + 32)
-    : Math.round(kelvin - 273.15);
-}
-
-// Function to convert windspeed from m/s to mph
-function convertWindSpeed(metricWindSpeed) {
-  return Math.round(metricWindSpeed * 2.23694);
-}
-
 // Fetch and display weather data
 function displayWeatherData(data) {
   const { name, main, weather, wind, dt } = data;
-
+  
   const date = new Date(dt * 1000);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
   cityNameElement.textContent = name;
-  tempElement.textContent = `${convertTemp(main.temp, isFahrenheit ? 'F' : 'C')}°${isFahrenheit ? 'F' : 'C'}`;
-  highLowElement.textContent = `${convertTemp(main.temp_max, isFahrenheit ? 'F' : 'C')}° / ${convertTemp(main.temp_min, isFahrenheit ? 'F' : 'C')}°`;
-  windSpeedElement.textContent = `${convertWindSpeed(wind.speed)} mph`;
+  tempElement.textContent = `${Math.round(main.temp)} F°`;
+  highLowElement.textContent = `${Math.round(main.temp_max)} F° / ${Math.round(main.temp_min)} F°`;
+  windSpeedElement.textContent = `${(wind.speed)} mph`;
   humidityElement.textContent = `${main.humidity}%`;
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
@@ -42,6 +30,7 @@ function displayWeatherData(data) {
 // Toggle between Fahrenheit and Celsius
 document.getElementById('unit-toggle').addEventListener('click', () => {
   isFahrenheit = !isFahrenheit;
+
   const cityName = document.getElementById('city-search').value.trim();
   fetchWeatherData(cityName); // Re-fetch or re-render with new units
 });
@@ -70,7 +59,7 @@ function searchCity() {
 async function fetchWeatherData(city = 'Bremerton') {
   const apiKey = '38137b56cf796c2682119ac4af83a500';
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`);
     
     if (!response.ok) {
       // If response is not OK, trigger error message
@@ -101,11 +90,10 @@ async function fetchWeatherData(city = 'Bremerton') {
 async function fetchForecast(city) {
   const apiKey = '38137b56cf796c2682119ac4af83a500';  
   try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`);
       if (!response.ok) throw new Error("Failed to fetch forecast data");
 
       const data = await response.json();
-      console.log(data); // Check data structure in console
 
       const dailyForecast = groupForecastByDay(data.list);
       displayForecast(dailyForecast);
@@ -128,11 +116,10 @@ function groupForecastByDay(list) {
               weather: entry.weather[0]
           };
       }
-
       dailyData[date].temps.push(entry.main.temp);
   });
 
-  return Object.values(dailyData).slice(0, 7).map(day => ({
+  return Object.values(dailyData).slice(0, 5).map(day => ({
       date: day.date,
       minTemp: Math.min(...day.temps),
       maxTemp: Math.max(...day.temps),
@@ -157,7 +144,7 @@ function displayForecast(forecastDays) {
           <p>${date}</p>
           <img src="${iconUrl}" alt="${description}">
           <p>${description}</p>
-          <p>High: ${Math.round(day.maxTemp)}°C / Low: ${Math.round(day.minTemp)}°C</p>
+          <p>High: ${Math.round(day.maxTemp)}°F / Low: ${Math.round(day.minTemp)}°F</p>
       `;
 
       forecastGrid.appendChild(forecastItem);
