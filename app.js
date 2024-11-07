@@ -97,17 +97,47 @@ async function fetchWeatherData(city = 'Bremerton') {
   }
 }
 
-// Example function to fetch 7-day weather forecast
+// Function to fetch forecast data
 async function fetchForecast(city) {
+  const apiKey = '38137b56cf796c2682119ac4af83a500';  
   try {
-      const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=38137b56cf796c2682119ac4af83a500=${city}&days=7`);
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
       if (!response.ok) throw new Error("Failed to fetch forecast data");
 
       const data = await response.json();
-      displayForecast(data.forecast.forecastday);
+      console.log(data); // Check data structure in console
+
+      const dailyForecast = groupForecastByDay(data.list);
+      displayForecast(dailyForecast);
   } catch (error) {
       console.error("Error fetching forecast:", error);
   }
+}
+
+// Helper function to group forecast data by day
+function groupForecastByDay(list) {
+  const dailyData = {};
+
+  list.forEach(entry => {
+      const date = new Date(entry.dt * 1000).toISOString().split("T")[0]; // Extract date in YYYY-MM-DD format
+
+      if (!dailyData[date]) {
+          dailyData[date] = {
+              date: date,
+              temps: [],
+              weather: entry.weather[0]
+          };
+      }
+
+      dailyData[date].temps.push(entry.main.temp);
+  });
+
+  return Object.values(dailyData).slice(0, 7).map(day => ({
+      date: day.date,
+      minTemp: Math.min(...day.temps),
+      maxTemp: Math.max(...day.temps),
+      weather: day.weather
+  }));
 }
 
 // Function to display forecast data in the HTML
@@ -117,19 +147,17 @@ function displayForecast(forecastDays) {
 
   forecastDays.forEach(day => {
       const date = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      const iconUrl = day.day.condition.icon;
-      const maxTemp = Math.round(day.day.maxtemp_c);
-      const minTemp = Math.round(day.day.mintemp_c);
-      const description = day.day.condition.text;
+      const iconUrl = `https://openweathermap.org/img/wn/${day.weather.icon}.png`;
+      const description = day.weather.description;
 
       // Create a div for each day's forecast
       const forecastItem = document.createElement('div');
       forecastItem.classList.add('forecast-item');
       forecastItem.innerHTML = `
           <p>${date}</p>
-          <img src="${iconUrl}" alt="Weather icon">
+          <img src="${iconUrl}" alt="${description}">
           <p>${description}</p>
-          <p>High: ${maxTemp}°C / Low: ${minTemp}°C</p>
+          <p>High: ${Math.round(day.maxTemp)}°C / Low: ${Math.round(day.minTemp)}°C</p>
       `;
 
       forecastGrid.appendChild(forecastItem);
@@ -138,6 +166,7 @@ function displayForecast(forecastDays) {
 
 // Call fetchForecast with a default city or based on user input
 fetchForecast('San Francisco'); // Example default city
+
 
 // Initial fetch
 fetchWeatherData();
