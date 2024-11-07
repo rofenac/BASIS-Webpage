@@ -1,3 +1,5 @@
+
+/*
 const cityNameElement = document.getElementById('city-name');
 const tempElement = document.getElementById('temp');
 const highLowElement = document.getElementById('high-low');
@@ -96,6 +98,6 @@ async function fetchWeatherData(city = 'Bremerton') {
     console.error("Error fetching weather data:", error);
   }
 }
-
+*/
 // Initial fetch
 fetchWeatherData();
