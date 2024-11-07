@@ -165,8 +165,7 @@ function displayForecast(forecastDays) {
 }
 
 // Call fetchForecast with a default city or based on user input
-fetchForecast('San Francisco'); // Example default city
-
+fetchForecast('Bremerton'); // Example default city
 
 // Initial fetch
 fetchWeatherData();
