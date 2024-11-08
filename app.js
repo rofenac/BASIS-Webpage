@@ -10,6 +10,8 @@ const dateElement = document.getElementById('date');
 
 let unit = 'imperial'; // Globally defined unit for the F/C toggle button
 
+const apiKey = `38137b56cf796c2682119ac4af83a500`; // OpenWeather API Key
+
 // Fetch and display weather data
 function displayWeatherData(data) {
   const { name, main, weather, wind, dt } = data;
@@ -38,11 +40,15 @@ document.getElementById('unit-toggle').addEventListener('click', () => {
   fetchWeatherData(cityName); // Re-fetch or re-render with new units
 });
 
-// Event listener for city search bar functionality
-document.getElementById('city-search').addEventListener('keydown', function (event) {
+// Event listener for city search bar functionality & updating forecast
+document.getElementById('city-search').addEventListener('keydown', async function (event) {
   if (event.key === 'Enter') {
     event.preventDefault();
     searchCity();
+    const cityName = this.value.trim();
+    if (cityName) {
+      await updateWeatherForCity(cityName);
+    }
   }
 });
 
@@ -50,17 +56,30 @@ document.getElementById('city-search').addEventListener('keydown', function (eve
 function searchCity() {
   const cityName = document.getElementById('city-search').value.trim();
 
-  if (cityName === "") {
-    alert("Please enter a city name.");
-    return;
-  }
-
   fetchWeatherData(cityName);
+  fetchForecast(cityName);
+}
+
+// Function to update the forecast grid
+async function updateWeatherForCity(cityName) {
+  try {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=${unit}`);
+    if (!response.ok) throw new Error("City not found");
+
+    const data = await response.json();
+
+    // Clear any previous error message
+    errorMessageElement.textContent = "";
+
+    displayWeatherData(data);
+    displayForecast(data.list);
+  } catch (error) {
+      errorMessageElement.textContent = "";
+  }
 }
 
 // Fetch data from OpenWeather API with error handling
 async function fetchWeatherData(city = 'Bremerton') {
-  const apiKey = '38137b56cf796c2682119ac4af83a500';
   try {
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`);
     
@@ -91,9 +110,8 @@ async function fetchWeatherData(city = 'Bremerton') {
 
 // Function to fetch forecast data
 async function fetchForecast(city) {
-  const apiKey = '38137b56cf796c2682119ac4af83a500';  
   try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`);
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${unit}`);
       if (!response.ok) throw new Error("Failed to fetch forecast data");
 
       const data = await response.json();
@@ -154,8 +172,6 @@ function displayForecast(forecastDays) {
   });
 }
 
-// Call fetchForecast with a default city or based on user input
+// Initial fetch with a default city
 fetchForecast('Bremerton'); // Example default city
-
-// Initial fetch
-fetchWeatherData();
+fetchWeatherData('Bremerton');
