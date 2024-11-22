@@ -15,7 +15,6 @@ const apiKey = `38137b56cf796c2682119ac4af83a500`; // OpenWeather API Key
 // Fetch and display weather data
 function displayWeatherData(data) {
   const { name, main, weather, wind, dt } = data;
-  
   const date = new Date(dt * 1000);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
@@ -46,11 +45,9 @@ document.getElementById('city-search').addEventListener('keydown', async functio
     event.preventDefault();
     searchCity();
     const cityName = this.value.trim();
-    if (cityName) {
-      await updateWeatherForCity(cityName);
     }
   }
-});
+);
 
 // Function for the city search bar
 function searchCity() {
@@ -82,7 +79,7 @@ async function updateWeatherForCity(cityName) {
 async function fetchWeatherData(city = 'Bremerton') {
   try {
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`);
-    
+
     if (!response.ok) {
       // If response is not OK, trigger error message
       errorMessageElement.textContent = "City not found or invalid input. Please try again.";
