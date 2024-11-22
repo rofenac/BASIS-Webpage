@@ -11,7 +11,7 @@ body {
   margin:auto;
 }
 
-/* Star of Nav bar*/
+/* Start of Nav bar */
 
 #navbar {
   margin: auto;
@@ -64,7 +64,8 @@ body {
   height: 100%;
 }
 
-/* End of Nav bar*/
+/* End of Nav bar */
+/* Start of live weather display */
 
 main {
   display: flex;
@@ -83,6 +84,7 @@ main {
 }
 
 .city-name,
+
 .weather-stats, .temperature {
   flex: 1;
   text-align: center;
@@ -97,6 +99,9 @@ main {
   font-size: 1.65em;
 }
 
+/* End of live weather display */
+/* Start of forecast grid */
+
 .forecast {
   margin-top: 20px;
   width: 100%;
@@ -108,7 +113,7 @@ main {
 
 .forecast-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-top: 10px;
 }
@@ -118,6 +123,7 @@ main {
   padding: 10px;
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 footer {

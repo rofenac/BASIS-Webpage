@@ -8,31 +8,23 @@ const descriptionElement = document.getElementById('description');
 const errorMessageElement = document.getElementById('error-message');
 const dateElement = document.getElementById('date');
 
-let isFahrenheit = true; // Default unit
+let unit = 'imperial'; // Globally defined unit for the F/C toggle button
 
-// Function to convert Kelvin to Fahrenheit or Celsius
-function convertTemp(kelvin, unit) {
-  return unit === 'F'
-    ? Math.round((kelvin - 273.15) * 9/5 + 32)
-    : Math.round(kelvin - 273.15);
-}
-
-// Function to convert windspeed from m/s to mph
-function convertWindSpeed(metricWindSpeed) {
-  return Math.round(metricWindSpeed * 2.23694);
-}
+const apiKey = `38137b56cf796c2682119ac4af83a500`; // OpenWeather API Key
 
 // Fetch and display weather data
 function displayWeatherData(data) {
   const { name, main, weather, wind, dt } = data;
-
   const date = new Date(dt * 1000);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
+  const unitLabel = (unit === 'imperial') ? 'F°' : 'C°';
+  const windSpeedUnit = (unit === 'imperial') ? 'mph' : 'm/s';
+
   cityNameElement.textContent = name;
-  tempElement.textContent = `${convertTemp(main.temp, isFahrenheit ? 'F' : 'C')}°${isFahrenheit ? 'F' : 'C'}`;
-  highLowElement.textContent = `${convertTemp(main.temp_max, isFahrenheit ? 'F' : 'C')}° / ${convertTemp(main.temp_min, isFahrenheit ? 'F' : 'C')}°`;
-  windSpeedElement.textContent = `${convertWindSpeed(wind.speed)} mph`;
+  tempElement.textContent = `${Math.round(main.temp)} ${unitLabel}`;
+  highLowElement.textContent = `${Math.round(main.temp_max)} ${unitLabel} / ${Math.round(main.temp_min)} ${unitLabel}`;
+  windSpeedElement.textContent = `${(wind.speed)} ${windSpeedUnit}`;
   humidityElement.textContent = `${main.humidity}%`;
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
@@ -41,37 +33,53 @@ function displayWeatherData(data) {
 
 // Toggle between Fahrenheit and Celsius
 document.getElementById('unit-toggle').addEventListener('click', () => {
-  isFahrenheit = !isFahrenheit;
+  unit = (unit === 'imperial') ? 'metric' : 'imperial';
+
   const cityName = document.getElementById('city-search').value.trim();
   fetchWeatherData(cityName); // Re-fetch or re-render with new units
 });
 
-// Event listener for city search bar functionality
-document.getElementById('city-search').addEventListener('keydown', function (event) {
+// Event listener for city search bar functionality & updating forecast
+document.getElementById('city-search').addEventListener('keydown', async function (event) {
   if (event.key === 'Enter') {
     event.preventDefault();
     searchCity();
+    const cityName = this.value.trim();
+    }
   }
-});
+);
 
 // Function for the city search bar
 function searchCity() {
   const cityName = document.getElementById('city-search').value.trim();
 
-  if (cityName === "") {
-    alert("Please enter a city name.");
-    return;
-  }
-
   fetchWeatherData(cityName);
+  fetchForecast(cityName);
+}
+
+// Function to update the forecast grid
+async function updateWeatherForCity(cityName) {
+  try {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=${unit}`);
+    if (!response.ok) throw new Error("City not found");
+
+    const data = await response.json();
+
+    // Clear any previous error message
+    errorMessageElement.textContent = "";
+
+    displayWeatherData(data);
+    displayForecast(data.list);
+  } catch (error) {
+      errorMessageElement.textContent = "";
+  }
 }
 
 // Fetch data from OpenWeather API with error handling
 async function fetchWeatherData(city = 'Bremerton') {
-  const apiKey = '38137b56cf796c2682119ac4af83a500';
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
-    
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`);
+
     if (!response.ok) {
       // If response is not OK, trigger error message
       errorMessageElement.textContent = "City not found or invalid input. Please try again.";
@@ -97,46 +105,70 @@ async function fetchWeatherData(city = 'Bremerton') {
   }
 }
 
-// Fetch and display the 7-day forecast
-async function getForecast(city) {
+// Function to fetch forecast data
+async function fetchForecast(city) {
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=38137b56cf796c2682119ac4af83a500`);
-    const data = await response.json();
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${unit}`);
+      if (!response.ok) throw new Error("Failed to fetch forecast data");
 
-    // Clear any existing forecast data
-    const forecastGrid = document.querySelector('.forecast-grid');
-    forecastGrid.innerHTML = '';
+      const data = await response.json();
 
-    // Loop through the 7-day forecast data
-    data.forecast.forecastday.forEach(day => {
-      // Create forecast item container
-      const forecastItem = document.createElement('div');
-      forecastItem.classList.add('forecast-item');
-
-      // Format date
-      const date = new Date(day.date);
-      const options = { weekday: 'short', month: 'short', day: 'numeric' };
-      const formattedDate = date.toLocaleDateString(undefined, options);
-
-      // Add forecast details
-      forecastItem.innerHTML = `
-        <p>${formattedDate}</p>
-        <img src="${day.day.condition.icon}" alt="Weather icon">
-        <p>Max: ${day.day.maxtemp_c}°C / ${day.day.maxtemp_f}°F</p>
-        <p>Min: ${day.day.mintemp_c}°C / ${day.day.mintemp_f}°F</p>
-      `;
-
-      // Append the forecast item to the grid
-      forecastGrid.appendChild(forecastItem);
-    });
+      const dailyForecast = groupForecastByDay(data.list);
+      displayForecast(dailyForecast);
   } catch (error) {
-    console.error("Error fetching forecast:", error);
+      console.error("Error fetching forecast:", error);
   }
 }
 
-// Example usage: Call getForecast with a city name
-getForecast('Tacoma'); // Replace 'Tacoma' with the user's selected city
+// Helper function to group forecast data by day
+function groupForecastByDay(list) {
+  const dailyData = {};
 
+  list.forEach(entry => {
+      const date = new Date(entry.dt * 1000).toISOString().split("T")[0]; // Extract date in YYYY-MM-DD format
 
-// Initial fetch
-fetchWeatherData();
+      if (!dailyData[date]) {
+          dailyData[date] = {
+              date: date,
+              temps: [],
+              weather: entry.weather[0]
+          };
+      }
+      dailyData[date].temps.push(entry.main.temp);
+  });
+
+  return Object.values(dailyData).slice(0, 5).map(day => ({
+      date: day.date,
+      minTemp: Math.min(...day.temps),
+      maxTemp: Math.max(...day.temps),
+      weather: day.weather
+  }));
+}
+
+// Function to display forecast data in the HTML
+function displayForecast(forecastDays) {
+  const forecastGrid = document.querySelector('.forecast-grid');
+  forecastGrid.innerHTML = ''; // Clear any existing content
+
+  forecastDays.forEach(day => {
+      const date = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      const iconUrl = `https://openweathermap.org/img/wn/${day.weather.icon}.png`;
+      const description = day.weather.description;
+
+      // Create a div for each day's forecast
+      const forecastItem = document.createElement('div');
+      forecastItem.classList.add('forecast-item');
+      forecastItem.innerHTML = `
+          <p>${date}</p>
+          <img src="${iconUrl}" alt="${description}">
+          <p>${description}</p>
+          <p>High: ${Math.round(day.maxTemp)}°F / Low: ${Math.round(day.minTemp)}°F</p>
+      `;
+
+      forecastGrid.appendChild(forecastItem);
+  });
+}
+
+// Initial fetch with a default city
+fetchForecast('Bremerton'); // Example default city
+fetchWeatherData('Bremerton');
