@@ -147,3 +147,116 @@ footer {
   display: block; /* Ensures it appears on a new line below the input */
   white-space: normal; /* Allow text to wrap to the next line */
 }
+
+/* My attempt at dynamic content */
+
+#dynamic-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Allows interaction with other content */
+  z-index: -1; /* Places the content behind other elements */
+  background-size: cover;
+  background-position: center;
+  transition: background 0.5s ease-in-out;
+}
+
+/* Thunderstorm */
+.thunderstorm-animation {
+  animation: flash 2s infinite;
+}
+
+@keyframes flash {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Drizzle */
+.drizzle-animation {
+  animation: drizzle 3s infinite;
+}
+
+@keyframes drizzle {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+/* Rain */
+.rain-animation {
+  animation: rain 4s linear infinite;
+}
+
+@keyframes rain {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+/* Snow */
+.snow-animation {
+  animation: snow 6s infinite;
+}
+
+@keyframes snow {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(50px);
+  }
+}
+
+/* Fog */
+.fog-animation {
+  animation: fog 8s infinite;
+}
+
+@keyframes fog {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Clear Sky */
+.clear-sky-animation {
+  animation: clear-sky 5s infinite;
+}
+
+@keyframes clear-sky {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+
+/* Clouds */
+.clouds-animation {
+  animation: clouds 7s linear infinite;
+}
+
+@keyframes clouds {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}

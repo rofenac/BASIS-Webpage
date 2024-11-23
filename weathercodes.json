@@ -1,0 +1,101 @@
+{
+  "weather_conditions": [
+    {
+      "group": "2xx",
+      "description": "Thunderstorm",
+      "conditions": [
+        { "code": 200, "type": "Thunderstorm", "description": "thunderstorm with light rain", "icon": "11d" },
+        { "code": 201, "type": "Thunderstorm", "description": "thunderstorm with rain", "icon": "11d" },
+        { "code": 202, "type": "Thunderstorm", "description": "thunderstorm with heavy rain", "icon": "11d" },
+        { "code": 210, "type": "Thunderstorm", "description": "light thunderstorm", "icon": "11d" },
+        { "code": 211, "type": "Thunderstorm", "description": "thunderstorm", "icon": "11d" },
+        { "code": 212, "type": "Thunderstorm", "description": "heavy thunderstorm", "icon": "11d" },
+        { "code": 221, "type": "Thunderstorm", "description": "ragged thunderstorm", "icon": "11d" },
+        { "code": 230, "type": "Thunderstorm", "description": "thunderstorm with light drizzle", "icon": "11d" },
+        { "code": 231, "type": "Thunderstorm", "description": "thunderstorm with drizzle", "icon": "11d" },
+        { "code": 232, "type": "Thunderstorm", "description": "thunderstorm with heavy drizzle", "icon": "11d" }
+      ]
+    },
+    {
+      "group": "3xx",
+      "description": "Drizzle",
+      "conditions": [
+        { "code": 300, "type": "Drizzle", "description": "light intensity drizzle", "icon": "09d" },
+        { "code": 301, "type": "Drizzle", "description": "drizzle", "icon": "09d" },
+        { "code": 302, "type": "Drizzle", "description": "heavy intensity drizzle", "icon": "09d" },
+        { "code": 310, "type": "Drizzle", "description": "light intensity drizzle rain", "icon": "09d" },
+        { "code": 311, "type": "Drizzle", "description": "drizzle rain", "icon": "09d" },
+        { "code": 312, "type": "Drizzle", "description": "heavy intensity drizzle rain", "icon": "09d" },
+        { "code": 313, "type": "Drizzle", "description": "shower rain and drizzle", "icon": "09d" },
+        { "code": 314, "type": "Drizzle", "description": "heavy shower rain and drizzle", "icon": "09d" },
+        { "code": 321, "type": "Drizzle", "description": "shower drizzle", "icon": "09d" }
+      ]
+    },
+    {
+      "group": "5xx",
+      "description": "Rain",
+      "conditions": [
+        { "code": 500, "type": "Rain", "description": "light rain", "icon": "10d" },
+        { "code": 501, "type": "Rain", "description": "moderate rain", "icon": "10d" },
+        { "code": 502, "type": "Rain", "description": "heavy intensity rain", "icon": "10d" },
+        { "code": 503, "type": "Rain", "description": "very heavy rain", "icon": "10d" },
+        { "code": 504, "type": "Rain", "description": "extreme rain", "icon": "10d" },
+        { "code": 511, "type": "Rain", "description": "freezing rain", "icon": "13d" },
+        { "code": 520, "type": "Rain", "description": "light intensity shower rain", "icon": "09d" },
+        { "code": 521, "type": "Rain", "description": "shower rain", "icon": "09d" },
+        { "code": 522, "type": "Rain", "description": "heavy intensity shower rain", "icon": "09d" },
+        { "code": 531, "type": "Rain", "description": "ragged shower rain", "icon": "09d" }
+      ]
+    },
+    {
+      "group": "6xx",
+      "description": "Snow",
+      "conditions": [
+        { "code": 600, "type": "Snow", "description": "light snow", "icon": "13d" },
+        { "code": 601, "type": "Snow", "description": "snow", "icon": "13d" },
+        { "code": 602, "type": "Snow", "description": "heavy snow", "icon": "13d" },
+        { "code": 611, "type": "Snow", "description": "sleet", "icon": "13d" },
+        { "code": 612, "type": "Snow", "description": "light shower sleet", "icon": "13d" },
+        { "code": 613, "type": "Snow", "description": "shower sleet", "icon": "13d" },
+        { "code": 615, "type": "Snow", "description": "light rain and snow", "icon": "13d" },
+        { "code": 616, "type": "Snow", "description": "rain and snow", "icon": "13d" },
+        { "code": 620, "type": "Snow", "description": "light shower snow", "icon": "13d" },
+        { "code": 621, "type": "Snow", "description": "shower snow", "icon": "13d" },
+        { "code": 622, "type": "Snow", "description": "heavy shower snow", "icon": "13d" }
+      ]
+    },
+    {
+      "group": "7xx",
+      "description": "Atmosphere",
+      "conditions": [
+        { "code": 701, "type": "Mist", "description": "mist", "icon": "50d" },
+        { "code": 711, "type": "Smoke", "description": "smoke", "icon": "50d" },
+        { "code": 721, "type": "Haze", "description": "haze", "icon": "50d" },
+        { "code": 731, "type": "Dust", "description": "sand/dust whirls", "icon": "50d" },
+        { "code": 741, "type": "Fog", "description": "fog", "icon": "50d" },
+        { "code": 751, "type": "Sand", "description": "sand", "icon": "50d" },
+        { "code": 761, "type": "Dust", "description": "dust", "icon": "50d" },
+        { "code": 762, "type": "Ash", "description": "volcanic ash", "icon": "50d" },
+        { "code": 771, "type": "Squall", "description": "squalls", "icon": "50d" },
+        { "code": 781, "type": "Tornado", "description": "tornado", "icon": "50d" }
+      ]
+    },
+    {
+      "group": "800",
+      "description": "Clear",
+      "conditions": [
+        { "code": 800, "type": "Clear", "description": "clear sky", "icon": "01d" }
+      ]
+    },
+    {
+      "group": "80x",
+      "description": "Clouds",
+      "conditions": [
+        { "code": 801, "type": "Clouds", "description": "few clouds: 11-25%", "icon": "02d" },
+        { "code": 802, "type": "Clouds", "description": "scattered clouds: 25-50%", "icon": "03d" },
+        { "code": 803, "type": "Clouds", "description": "broken clouds: 51-84%", "icon": "04d" },
+        { "code": 804, "type": "Clouds", "description": "overcast clouds: 85-100%", "icon": "04d" }
+      ]
+    }
+  ]
+}

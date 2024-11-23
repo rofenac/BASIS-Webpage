@@ -18,6 +18,8 @@ function displayWeatherData(data) {
   const date = new Date(dt * 1000);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
+  const weatherCode = data.weather[0].id;
+
   const unitLabel = (unit === 'imperial') ? 'F°' : 'C°';
   const windSpeedUnit = (unit === 'imperial') ? 'mph' : 'm/s';
 
@@ -29,6 +31,7 @@ function displayWeatherData(data) {
   descriptionElement.textContent = weather[0].description;
   weatherIconElement.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
   dateElement.textContent = (date.toLocaleDateString(undefined, options));
+  updateDynamicContent(weatherCode);
 }
 
 // Toggle between Fahrenheit and Celsius
@@ -167,6 +170,46 @@ function displayForecast(forecastDays) {
 
       forecastGrid.appendChild(forecastItem);
   });
+}
+
+function updateDynamicContent(weatherCode) {
+  const dynamicContent = document.getElementById('dynamic-content');
+  let background = '';
+  let animationClass = '';
+
+  if (weatherCode >= 200 && weatherCode < 300) {
+    // Thunderstorm
+    background = 'url("images/thunderstorm-bg.jpg")';
+    animationClass = 'thunderstorm-animation';
+  } else if (weatherCode >= 300 && weatherCode < 400) {
+    // Drizzle
+    background = 'url("images/drizzle-bg.jpg")';
+    animationClass = 'drizzle-animation';
+  } else if (weatherCode >= 500 && weatherCode < 600) {
+    // Rain
+    background = 'url("images/rain-bg.jpg")';
+    animationClass = 'rain-animation';
+  } else if (weatherCode >= 600 && weatherCode < 700) {
+    // Snow
+    background = 'url("images/snow-bg.jpg")';
+    animationClass = 'snow-animation';
+  } else if (weatherCode >= 700 && weatherCode < 800) {
+    // Atmosphere (fog, mist, etc.)
+    background = 'url("images/fog-bg.jpg")';
+    animationClass = 'fog-animation';
+  } else if (weatherCode === 800) {
+    // Clear
+    background = 'url("images/clear-sky-bg.jpg")';
+    animationClass = 'clear-sky-animation';
+  } else if (weatherCode > 800) {
+    // Clouds
+    background = 'url("images/clouds-bg.jpg")';
+    animationClass = 'clouds-animation';
+  }
+
+  // Update the background and animation
+  dynamicContent.style.backgroundImage = background;
+  dynamicContent.className = animationClass;
 }
 
 // Initial fetch with a default city
