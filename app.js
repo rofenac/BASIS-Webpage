@@ -35,8 +35,9 @@ function displayWeatherData(data) {
 document.getElementById('unit-toggle').addEventListener('click', () => {
   unit = (unit === 'imperial') ? 'metric' : 'imperial';
 
-  const cityName = document.getElementById('city-search').value.trim();
+  const cityName = document.getElementById('city-search').value.trim() || 'Bremerton';
   fetchWeatherData(cityName); // Re-fetch or re-render with new units
+  fetchForecast(cityName);
 });
 
 // Event listener for city search bar functionality & updating forecast
@@ -150,6 +151,9 @@ function displayForecast(forecastDays) {
   const forecastGrid = document.querySelector('.forecast-grid');
   forecastGrid.innerHTML = ''; // Clear any existing content
 
+  // Dynamically determine temperature unit
+  const unitLabel = (unit === 'imperial') ? '°F' : '°C';
+
   forecastDays.forEach(day => {
       const date = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
       const iconUrl = `https://openweathermap.org/img/wn/${day.weather.icon}.png`;
@@ -162,7 +166,7 @@ function displayForecast(forecastDays) {
           <p>${date}</p>
           <img src="${iconUrl}" alt="${description}">
           <p>${description}</p>
-          <p>High: ${Math.round(day.maxTemp)}°F / Low: ${Math.round(day.minTemp)}°F</p>
+          <p>High: ${Math.round(day.maxTemp)}${unitLabel} / Low: ${Math.round(day.minTemp)}${unitLabel}</p>
       `;
 
       forecastGrid.appendChild(forecastItem);
