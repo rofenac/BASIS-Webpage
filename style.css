@@ -147,3 +147,86 @@ footer {
   display: block; /* Ensures it appears on a new line below the input */
   white-space: normal; /* Allow text to wrap to the next line */
 }
+
+/* Basic styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  transition: background-image 1s ease-in-out;
+}
+
+/* Weather Animation */
+.rain {
+  animation: rain 5s infinite linear;
+}
+
+.snow {
+  animation: snow 10s infinite linear;
+}
+
+@keyframes rain {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes snow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.clear-sky, .cloudy, .fog, .rain, .snow, .thunderstorm {
+  background-image: url('images/clear-sky.jpg'); /* Default background */
+}
+
+.clear-sky {
+  background-image: url('images/clear-sky.jpg');
+}
+
+.cloudy {
+  background-image: url('images/cloudy.jpg');
+}
+
+.fog {
+  background-image: url('images/fog.jpg');
+}
+
+.rain {
+  background-image: url('images/rain.jpg');
+}
+
+.snow {
+  background-image: url('images/snow.jpg');
+}
+
+.thunderstorm {
+  background-image: url('images/thunderstorm.jpg');
+}

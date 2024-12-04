@@ -14,14 +14,19 @@ const apiKey = `38137b56cf796c2682119ac4af83a500`; // OpenWeather API Key
 
 // Fetch and display weather data
 function displayWeatherData(data) {
-  const { name, main, weather, wind, dt } = data;
+  const { weather, main, wind, dt } = data;
+  const weatherCode = weather[0].id;  // Use the weather code for the background
+  const unitLabel = (unit === 'imperial') ? 'F°' : 'C°';
+  const windSpeedUnit = (unit === 'imperial') ? 'mph' : 'm/s';
+  
+  // Update background based on weather condition
+  updateBackground(weatherCode);
+  
+  // Display logic
   const date = new Date(dt * 1000);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
-  const unitLabel = (unit === 'imperial') ? 'F°' : 'C°';
-  const windSpeedUnit = (unit === 'imperial') ? 'mph' : 'm/s';
-
-  cityNameElement.textContent = name;
+  cityNameElement.textContent = data.name;
   tempElement.textContent = `${Math.round(main.temp)} ${unitLabel}`;
   highLowElement.textContent = `${Math.round(main.temp_max)} ${unitLabel} / ${Math.round(main.temp_min)} ${unitLabel}`;
   windSpeedElement.textContent = `${(wind.speed)} ${windSpeedUnit}`;
@@ -171,6 +176,32 @@ function displayForecast(forecastDays) {
 
       forecastGrid.appendChild(forecastItem);
   });
+}
+
+// Function to update the background based on weather condition
+function updateBackground(weatherCode) {
+  const backgroundElement = document.getElementById('background');
+  let backgroundImage = '';
+
+  // Example: Based on weather codes, set the background image
+  if (weatherCode >= 200 && weatherCode <= 299) {
+    backgroundImage = 'url("images/thunderstorm.jpg")';  // Thunderstorm image
+  } else if (weatherCode >= 300 && weatherCode <= 399) {
+    backgroundImage = 'url("images/rain.jpg")';  // Rain image
+  } else if (weatherCode >= 500 && weatherCode <= 599) {
+    backgroundImage = 'url("images/rain.jpg")';  // Rain image
+  } else if (weatherCode >= 600 && weatherCode <= 699) {
+    backgroundImage = 'url("images/snow.jpg")';  // Snow image
+  } else if (weatherCode >= 700 && weatherCode <= 799) {
+    backgroundImage = 'url("images/fog.jpg")';  // Fog image
+  } else if (weatherCode === 800) {
+    backgroundImage = 'url("images/clear-sky.jpg")';  // Clear sky image
+  } else if (weatherCode >= 801 && weatherCode <= 804) {
+    backgroundImage = 'url("images/cloudy.jpg")';  // Cloudy image
+  }
+
+  // Apply the background image
+  backgroundElement.style.backgroundImage = backgroundImage;
 }
 
 // Initial fetch with a default city
