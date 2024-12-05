@@ -124,11 +124,29 @@ main {
 }
 
 .forecast-item {
-  background-color: #e0e0e0;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Warm gradient for highlights */
+  padding: 15px;
+  border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+}
+
+.forecast-item:hover {
+  transform: scale(1.05); /* Slight pop-out effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.forecast-item img {
+  width: 50px; /* Scaled icon size */
+  height: auto;
+  margin: 10px 0;
+}
+
+.forecast-item p {
+  margin: 5px 0;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); /* Subtle text depth */
 }
 
 footer {
@@ -362,13 +380,19 @@ body {
 .weather-info {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient for depth */
   padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  color: white; /* Contrast for text */
 }
 
 .city-name,
 .weather-stats, .temperature {
   flex: 1;
   text-align: center;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Subtle text depth */
 }
 
 /* Other general styles */
@@ -381,28 +405,26 @@ footer {
 
 #solar-data-container {
   text-align: center;
-  background-color: #222;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 20px;
+  background: linear-gradient(135deg, #43cea2, #185a9d); /* Cool gradient for balance */
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Depth effect */
+  margin: 20px auto;
+  max-width: fit-content;
+  border: 2px solid rgba(255, 255, 255, 0.4); /* Transparent border for subtle effect */
+  color: white;
 }
 
-#solar-data-container {
-  text-align: center;
-  background-color: #222;
-  padding: 10px;
+#solar-data-container img {
+  max-width: 100%;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin: 20px auto; /* Center the box horizontally */
-  max-width: fit-content; /* Make the container size match its content */
-  border: 2px solid #444;
-  box-sizing: border-box; /* Ensures padding and border are included in width */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Add depth to the image */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #solar-data-container img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05); /* Slight enlargement on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhance shadow on hover */
 }
 
 #solar-data-loader {

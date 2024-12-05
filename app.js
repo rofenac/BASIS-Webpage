@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Simulating weather condition (You can replace this with real weather data)
-updateWeatherAnimation('rain');       // Rain animation
+//updateWeatherAnimation('rain');       // Rain animation
 //updateWeatherAnimation('snow');       // Snow animation
 //updateWeatherAnimation('cloudy');     // Cloud animation
 //updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
