@@ -12,8 +12,8 @@ body {
 }
 
 header, main, footer {
-  position: relative; /* Ensure elements layer correctly */
-  z-index: 10; /* Above background and animations */
+  position: relative;
+  z-index: 10; /* Below animations but above background */
 }
 
 /* Start of Nav bar */
@@ -171,16 +171,26 @@ body {
 
 /* Background container - Ensure it covers the entire viewport and is above other elements */
 #background {
-  position: fixed; /* Ensures the background covers the viewport */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Full viewport width */
-  height: 100vh; /* Full viewport height */
-  z-index: -1; /* Set behind the main content */
-  background-size: cover; /* Scale the image to cover the entire area */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent tiling */
-  overflow: hidden; /* Prevent overflow of animated elements */
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* Lowest z-index for the background */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+#animations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100; /* Above all other elements */
+  pointer-events: none; /* Allow interactions with underlying elements */
 }
 
 /* Ensure animations layer properly */
@@ -190,7 +200,7 @@ body {
 .cloud,
 .fog {
   position: absolute;
-  z-index: 1; /* Layer above the background but below content */
+  z-index: 100; /* Make sure animations are above everything else */
   pointer-events: none; /* Prevent blocking interactions */
 }
 
@@ -238,31 +248,49 @@ body {
 /* Cloud animation */
 .cloud {
   position: absolute;
-  width: 200px;
-  height: 100px;
-  background-color: white;
-  border-radius: 50%;
+  border-radius: 50%; /* Rounded edges for cloud appearance */
   opacity: 0.7;
-  animation: moveClouds 30s linear infinite;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
-@keyframes moveClouds {
+@keyframes moveCloudsRight {
   0% {
-    left: -200px; /* Start off-screen to the left */
+    transform: translateX(0);
   }
   100% {
-    left: 100vw; /* Move off-screen to the right */
+    transform: translateX(110vw); /* Move completely off-screen to the right */
+  }
+}
+
+@keyframes moveCloudsLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-110vw); /* Move completely off-screen to the left */
   }
 }
 
 /* Lightning bolt segments */
 .lightning {
   position: absolute;
+  height: 100vh;
   width: 6px; /* Thicker for better visibility */
   background-color: rgba(255, 255, 255, 0.9); /* Bright white */
   box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.8); /* Glow effect */
   z-index: 2; /* Ensure it's above animations and background */
   pointer-events: none; /* Allow interactions with underlying elements */
+}
+
+@keyframes lightning {
+  0% {
+    top: 0; /* Start at the top */
+    opacity: 1;
+  }
+  100% {
+    top: 100vh; /* Extend to the bottom of the viewport */
+    opacity: 0.3;
+  }
 }
 
 /* Lightning flash effect */

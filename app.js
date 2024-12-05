@@ -16,6 +16,7 @@ const weatherConditions = {
   cloudy: 'cloudy',
   clearSky: 'clear-sky',
 };
+const animationsContainer = document.getElementById('animations');
 
 let unit = 'imperial'; // Globally defined unit for the F/C toggle button
 
@@ -252,7 +253,7 @@ function createRain() {
     raindrop.classList.add('raindrop');
     raindrop.style.left = `${Math.random() * 100}vw`; // Random horizontal position
     raindrop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`; // Random speed
-    backgroundElement.appendChild(raindrop);
+    animationsContainer.appendChild(raindrop);
   }
 }
 
@@ -265,7 +266,7 @@ function createSnow() {
     snowflake.classList.add('snowflake');
     snowflake.style.left = `${Math.random() * 100}vw`; // Random horizontal position
     snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random speed
-    backgroundElement.appendChild(snowflake);
+    animationsContainer.appendChild(snowflake);
   }
 }
 
@@ -304,24 +305,20 @@ function createLightning() {
 function generateLightningPath(startX) {
   const segments = [];
   let currentX = startX;
-  let currentY = 0; // Always start at the top
+  let currentY = 0; // Start at the top
 
-  for (let i = 0; i < 15; i++) { // Create 15 segments for the lightning
-    const nextX = currentX + (Math.random() - 0.5) * 200; // Random horizontal deviation
+  while (currentY < window.innerHeight) { // Continue until the bottom of the screen
+    const nextX = currentX + (Math.random() - 0.5) * 200; // Horizontal deviation
     const nextY = currentY + Math.random() * 80; // Progress downward
 
-    const angle = Math.atan2(nextY - currentY, nextX - currentX) * (180 / Math.PI); // Calculate angle
+    const angle = Math.atan2(nextY - currentY, nextX - currentX) * (180 / Math.PI); // Segment angle
     const height = Math.sqrt((nextX - currentX) ** 2 + (nextY - currentY) ** 2); // Segment length
 
     segments.push({ x: currentX, y: currentY, height, angle });
 
     currentX = nextX;
     currentY = nextY;
-
-    // Stop if the bolt reaches the bottom of the screen
-    if (currentY > window.innerHeight) break;
   }
-
   return segments;
 }
 
@@ -336,22 +333,45 @@ function flashScreen() {
 
 // Function to create cloud movement
 function createClouds() {
-  const numberOfClouds = 5;
+  const numberOfClouds = 20; // Adjust the number of clouds
+  const shades = ['#e0e0e0', '#d8d8d8', '#c8c8c8', '#b8b8b8']; // Shades for depth
 
   for (let i = 0; i < numberOfClouds; i++) {
     const cloud = document.createElement('div');
     cloud.classList.add('cloud');
-    cloud.style.top = `${Math.random() * 50}vh`; // Random vertical position
-    cloud.style.animationDuration = `${Math.random() * 20 + 20}s`; // Random speed
-    backgroundElement.appendChild(cloud);
+
+    // Randomize size for depth
+    const width = Math.random() * 150 + 100; // Width between 100px and 250px
+    const height = width / 2; // Maintain proportion for natural cloud shapes
+    cloud.style.width = `${width}px`;
+    cloud.style.height = `${height}px`;
+
+    // Randomize shading
+    cloud.style.backgroundColor = shades[Math.floor(Math.random() * shades.length)];
+
+    // Determine if the cloud starts from the left or right
+    const isFromLeft = Math.random() > 0.5;
+    if (isFromLeft) {
+      cloud.style.left = `-${width}px`; // Start off-screen to the left
+      cloud.style.animation = `moveCloudsRight ${Math.random() * 20 + 20}s linear infinite`;
+    } else {
+      cloud.style.left = `100vw`; // Start off-screen to the right
+      cloud.style.animation = `moveCloudsLeft ${Math.random() * 20 + 20}s linear infinite`;
+    }
+
+    // Randomize vertical position
+    cloud.style.top = `${Math.random() * 100}vh`; // Random vertical position
+
+    // Add the cloud to the background
+    animationsContainer.appendChild(cloud);
   }
 }
 
 // Simulating weather condition (You can replace this with real weather data)
-updateWeatherAnimation('rain');       // Rain animation
+//updateWeatherAnimation('rain');       // Rain animation
 //updateWeatherAnimation('snow');       // Snow animation
 //updateWeatherAnimation('cloudy');     // Cloud animation
-//updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
+updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
 
 
 // Initial fetch with a default city
