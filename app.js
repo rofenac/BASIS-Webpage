@@ -259,7 +259,7 @@ function createRain() {
 
 // Function to create snow effect
 function createSnow() {
-  const numberOfSnowflakes = 50;
+  const numberOfSnowflakes = 60;
 
   for (let i = 0; i < numberOfSnowflakes; i++) {
     const snowflake = document.createElement('div');
@@ -390,11 +390,38 @@ function createClouds() {
   }
 }
 
+//Code for solar data box at the bottom of the page
+document.addEventListener("DOMContentLoaded", () => {
+  const solarImg = document.getElementById("solar-data-img");
+  const loader = document.getElementById("solar-data-loader");
+  const container = document.getElementById("solar-data-container");
+
+  // Show loader while the image is loading
+  loader.style.display = "block";
+
+  // Hide loader and show the image when it has loaded
+  solarImg.onload = () => {
+    loader.style.display = "none";
+    solarImg.style.display = "block";
+  };
+
+  // Handle errors gracefully
+  solarImg.onerror = () => {
+    loader.textContent = "Failed to load solar data.";
+    loader.style.color = "red";
+  };
+
+  // Add click event for custom behavior
+  container.addEventListener("click", () => {
+    alert("Redirecting to Solar Data Source!");
+  });
+});
+
 // Simulating weather condition (You can replace this with real weather data)
-//updateWeatherAnimation('rain');       // Rain animation
+updateWeatherAnimation('rain');       // Rain animation
 //updateWeatherAnimation('snow');       // Snow animation
 //updateWeatherAnimation('cloudy');     // Cloud animation
-updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
+//updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
 
 
 // Initial fetch with a default city

@@ -373,8 +373,40 @@ body {
 
 /* Other general styles */
 footer {
-  background-color: #333;
+  background-color: transparent;
   color: white;
   padding: 10px;
   text-align: center;
+}
+
+#solar-data-container {
+  text-align: center;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+#solar-data-container {
+  text-align: center;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 20px auto; /* Center the box horizontally */
+  max-width: fit-content; /* Make the container size match its content */
+  border: 2px solid #444;
+  box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+#solar-data-container img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+#solar-data-loader {
+  color: #fff;
+  font-size: 1.2em;
+  display: none;
 }
