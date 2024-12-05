@@ -303,13 +303,25 @@ function createLightning() {
       // Remove the segment after a short delay
       setTimeout(() => segmentElement.remove(), 300);
     });
+  }
 
-    // Schedule the next lightning strike
-    setTimeout(triggerLightning, Math.random() * 2000 + 3000);
+  function tripleLightningStrike() {
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        triggerLightning();
+      }, i * 300); // Delay each strike by 300ms
+    }
+  }
+
+  function startLightningSequence() {
+    tripleLightningStrike();
+
+    // Schedule the next set of strikes randomly between 3 and 5 seconds
+    setTimeout(startLightningSequence, Math.random() * 2000 + 3000);
   }
 
   // Start the lightning sequence
-  triggerLightning();
+  startLightningSequence();
 }
 
 // Generate a lightning path spanning the entire screen
