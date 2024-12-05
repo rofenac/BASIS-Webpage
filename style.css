@@ -274,12 +274,10 @@ body {
 /* Lightning bolt segments */
 .lightning {
   position: absolute;
-  height: 100vh;
-  width: 6px; /* Thicker for better visibility */
-  background-color: rgba(255, 255, 255, 0.9); /* Bright white */
-  box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.8); /* Glow effect */
-  z-index: 2; /* Ensure it's above animations and background */
-  pointer-events: none; /* Allow interactions with underlying elements */
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.9); /* Glow effect */
+  z-index: 200;
+  pointer-events: none;
 }
 
 @keyframes lightning {
@@ -300,10 +298,9 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 3; /* Above all elements */
-  animation: lightning-flash 0.2s ease-in-out;
-  pointer-events: none;
+  z-index: 101; /* Above other animations */
+  pointer-events: none; /* Ensure interactions aren't blocked */
+  animation: flashCycle 0.5s ease-in-out;
 }
 
 @keyframes lightning-flash {
@@ -311,6 +308,29 @@ body {
     opacity: 0;
   }
   50% {
+    opacity: 1;
+  }
+}
+
+@keyframes flashCycle {
+  0% {
+    background-color: white;
+    opacity: 1;
+  }
+  25% {
+    background-color: gray;
+    opacity: 0.8;
+  }
+  50% {
+    background-color: black;
+    opacity: 0.6;
+  }
+  75% {
+    background-color: gray;
+    opacity: 0.8;
+  }
+  100% {
+    background-color: white;
     opacity: 1;
   }
 }

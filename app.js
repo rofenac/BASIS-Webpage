@@ -272,33 +272,44 @@ function createSnow() {
 
 // Function to create lightning effect
 function createLightning() {
-  const lightningFlashes = Math.floor(Math.random() * 4) + 2; // Number of flashes per storm
+  function triggerLightning() {
+    flashScreen();
 
-  for (let i = 0; i < lightningFlashes; i++) {
-    setTimeout(() => {
-      const startX = Math.random() * window.innerWidth; // Random start point
-      const path = generateLightningPath(startX);
+    const startX = Math.random() * window.innerWidth; // Random horizontal start
+    const path = generateLightningPath(startX);
 
-      // Create and render each segment of the lightning bolt
-      path.forEach(segment => {
-        const segmentElement = document.createElement('div');
-        segmentElement.classList.add('lightning');
-        segmentElement.style.left = `${segment.x}px`;
-        segmentElement.style.top = `${segment.y}px`;
-        segmentElement.style.height = `${segment.height}px`;
-        segmentElement.style.transform = `rotate(${segment.angle}deg)`;
-        document.body.appendChild(segmentElement);
+    path.forEach((segment) => {
+      const segmentElement = document.createElement('div');
+      segmentElement.classList.add('lightning');
 
-        // Remove the segment after a short delay
-        setTimeout(() => {
-          segmentElement.remove();
-        }, 300);
-      });
+      // Position and draw the segment
+      const deltaX = segment.endX - segment.startX;
+      const deltaY = segment.endY - segment.startY;
+      const length = Math.sqrt(deltaX ** 2 + deltaY ** 2); // Length of the segment
+      const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI); // Angle in degrees
 
-      // Add a bright flash effect
-      flashScreen();
-    }, i * (Math.random() * 1000 + 500)); // Randomized delay between flashes
+      segmentElement.style.position = "absolute";
+      segmentElement.style.width = `${length}px`; // Set the length as the width of the segment
+      segmentElement.style.height = "4px"; // Thickness of the lightning bolt
+      segmentElement.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+      segmentElement.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.9)";
+      segmentElement.style.left = `${segment.startX}px`; // Starting X position
+      segmentElement.style.top = `${segment.startY}px`; // Starting Y position
+      segmentElement.style.transform = `rotate(${angle}deg)`; // Rotate based on the angle
+      segmentElement.style.transformOrigin = "0 50%"; // Align rotation at the start of the segment
+
+      animationsContainer.appendChild(segmentElement);
+
+      // Remove the segment after a short delay
+      setTimeout(() => segmentElement.remove(), 300);
+    });
+
+    // Schedule the next lightning strike
+    setTimeout(triggerLightning, Math.random() * 2000 + 3000);
   }
+
+  // Start the lightning sequence
+  triggerLightning();
 }
 
 // Generate a lightning path spanning the entire screen
@@ -307,18 +318,18 @@ function generateLightningPath(startX) {
   let currentX = startX;
   let currentY = 0; // Start at the top
 
-  while (currentY < window.innerHeight) { // Continue until the bottom of the screen
-    const nextX = currentX + (Math.random() - 0.5) * 200; // Horizontal deviation
-    const nextY = currentY + Math.random() * 80; // Progress downward
+  while (currentY < window.innerHeight) {
+    // Limit horizontal deviation to ±20 pixels
+    const nextX = currentX + (Math.random() - 0.5) * 40; // Slight jaggedness
+    const nextY = currentY + Math.random() * 120 + 60; // Strong vertical progression
 
-    const angle = Math.atan2(nextY - currentY, nextX - currentX) * (180 / Math.PI); // Segment angle
-    const height = Math.sqrt((nextX - currentX) ** 2 + (nextY - currentY) ** 2); // Segment length
+    segments.push({ startX: currentX, startY: currentY, endX: nextX, endY: nextY });
 
-    segments.push({ x: currentX, y: currentY, height, angle });
-
+    // Update current position
     currentX = nextX;
     currentY = nextY;
   }
+
   return segments;
 }
 
