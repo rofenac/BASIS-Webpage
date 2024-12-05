@@ -7,8 +7,10 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
-  width: 80%;
-  margin:auto;
+  width: 100%;
+  height: 100vh;
+  margin:0;
+  overflow: hidden;
 }
 
 header, main, footer {
@@ -21,7 +23,7 @@ header, main, footer {
 #navbar {
   margin: auto;
   width: 100%;
-  background: linear-gradient(135deg, #5f72be, #9b23ea); /* Matching purple-blue gradient */
+  background: linear-gradient(135deg, #5f72be, #9b23ea);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Add depth */
   border-radius: 12px; /* Rounded corners for a modern feel */
   padding: 0.5em 1em;
@@ -232,22 +234,6 @@ footer {
   font-size: 0.9em;
   margin-top: 5px;
   text-shadow: none; /* Avoid text shadow on error messages */
-}
-
-/* Basic Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  width: 100%;
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
 }
 
 /* Background container - Ensure it covers the entire viewport and is above other elements */

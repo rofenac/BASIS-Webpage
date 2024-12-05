@@ -8,14 +8,6 @@ const descriptionElement = document.getElementById('description');
 const errorMessageElement = document.getElementById('error-message');
 const dateElement = document.getElementById('date');
 const backgroundElement = document.getElementById('background');
-const weatherConditions = {
-  thunderstorm: 'thunderstorm',
-  rain: 'rain',
-  snow: 'snow',
-  fog: 'fog',
-  cloudy: 'cloudy',
-  clearSky: 'clear-sky',
-};
 const animationsContainer = document.getElementById('animations');
 
 let unit = 'imperial'; // Globally defined unit for the F/C toggle button
@@ -60,7 +52,6 @@ document.getElementById('city-search').addEventListener('keydown', async functio
   if (event.key === 'Enter') {
     event.preventDefault();
     searchCity();
-    const cityName = this.value.trim();
     }
   }
 );
@@ -71,24 +62,6 @@ function searchCity() {
 
   fetchWeatherData(cityName);
   fetchForecast(cityName);
-}
-
-// Function to update the forecast grid
-async function updateWeatherForCity(cityName) {
-  try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=${unit}`);
-    if (!response.ok) throw new Error("City not found");
-
-    const data = await response.json();
-
-    // Clear any previous error message
-    errorMessageElement.textContent = "";
-
-    displayWeatherData(data);
-    displayForecast(data.list);
-  } catch (error) {
-      errorMessageElement.textContent = "";
-  }
 }
 
 // Fetch data from OpenWeather API with error handling
@@ -103,12 +76,6 @@ async function fetchWeatherData(city = 'Bremerton') {
     }
 
     const data = await response.json();
-
-    // If API returned bad data
-    if (!data || data.error) {
-      errorMessageElement.textContent = "Unable to retrieve data. Please check your input and try again.";
-      return;
-    }
 
     // Clear any previous error message and display the data
     errorMessageElement.textContent = "";
