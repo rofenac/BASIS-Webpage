@@ -255,12 +255,20 @@ function updateWeatherAnimation(weatherCondition) {
   }
 }
 
-// Function to clear existing animations
+// Function to clear all animations, including rain and lightning
 function clearAnimations() {
-  // Remove all child elements from the animations container
   while (animationsContainer.firstChild) {
     animationsContainer.removeChild(animationsContainer.firstChild);
   }
+
+  // Clear all active timeouts
+  activeTimeouts.forEach((timeout) => clearTimeout(timeout));
+  activeTimeouts = [];
+
+  // Clear any lingering elements
+  document.querySelectorAll('.raindrop, .lightning, .lightning-flash').forEach((element) => {
+    if (element.parentNode) element.remove();
+  });
 }
 
 // Function to create rain effect
@@ -289,57 +297,65 @@ function createSnow() {
   }
 }
 
+let activeTimeouts = [];
+
 // Function to create lightning effect
 function createLightning() {
   function triggerLightning() {
-    flashScreen();
+    const flash = document.createElement('div');
+    flash.classList.add('lightning-flash');
+    animationsContainer.appendChild(flash);
 
-    const startX = Math.random() * window.innerWidth; // Random horizontal start
+    const startX = Math.random() * window.innerWidth;
     const path = generateLightningPath(startX);
 
     path.forEach((segment) => {
       const segmentElement = document.createElement('div');
       segmentElement.classList.add('lightning');
 
-      // Position and draw the segment
       const deltaX = segment.endX - segment.startX;
       const deltaY = segment.endY - segment.startY;
-      const length = Math.sqrt(deltaX ** 2 + deltaY ** 2); // Length of the segment
-      const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI); // Angle in degrees
+      const length = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+      const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 
-      segmentElement.style.position = "absolute";
-      segmentElement.style.width = `${length}px`; // Set the length as the width of the segment
-      segmentElement.style.height = "4px"; // Thickness of the lightning bolt
-      segmentElement.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-      segmentElement.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.9)";
-      segmentElement.style.left = `${segment.startX}px`; // Starting X position
-      segmentElement.style.top = `${segment.startY}px`; // Starting Y position
-      segmentElement.style.transform = `rotate(${angle}deg)`; // Rotate based on the angle
-      segmentElement.style.transformOrigin = "0 50%"; // Align rotation at the start of the segment
+      segmentElement.style.width = `${length}px`;
+      segmentElement.style.height = "4px";
+      segmentElement.style.left = `${segment.startX}px`;
+      segmentElement.style.top = `${segment.startY}px`;
+      segmentElement.style.transform = `rotate(${angle}deg)`;
+      segmentElement.style.transformOrigin = "0 50%";
 
       animationsContainer.appendChild(segmentElement);
 
-      // Remove the segment after a short delay
-      setTimeout(() => segmentElement.remove(), 300);
+      // Track timeout for segment removal
+      const segmentTimeout = setTimeout(() => {
+        if (segmentElement.parentNode) segmentElement.remove();
+      }, 300);
+      activeTimeouts.push(segmentTimeout);
     });
+
+    // Track timeout for flash removal
+    const flashTimeout = setTimeout(() => {
+      if (flash.parentNode) flash.remove();
+    }, 200);
+    activeTimeouts.push(flashTimeout);
   }
 
   function tripleLightningStrike() {
     for (let i = 0; i < 3; i++) {
-      setTimeout(() => {
+      const strikeTimeout = setTimeout(() => {
         triggerLightning();
-      }, i * 300); // Delay each strike by 300ms
+      }, i * 300);
+      activeTimeouts.push(strikeTimeout);
     }
   }
 
   function startLightningSequence() {
     tripleLightningStrike();
-
-    // Schedule the next set of strikes randomly between 3 and 5 seconds
-    setTimeout(startLightningSequence, Math.random() * 2000 + 3000);
+    const sequenceTimeout = setTimeout(startLightningSequence, Math.random() * 2000 + 3000);
+    activeTimeouts.push(sequenceTimeout);
   }
 
-  // Start the lightning sequence
   startLightningSequence();
 }
 
@@ -409,6 +425,35 @@ function createClouds() {
   }
 }
 
+// Function to create eerie fog blobs with dynamic shapes
+function createFog() {
+  const numberOfBlobs = 50;
+
+  for (let i = 0; i < numberOfBlobs; i++) {
+    const fogBlob = document.createElement('div');
+    fogBlob.classList.add('fog-blob');
+
+    // Randomize size and position
+    const size = Math.random() * 300 + 200; // Blob size between 200px and 500px
+    fogBlob.style.width = `${size}px`;
+    fogBlob.style.height = `${size}px`;
+    fogBlob.style.top = `${Math.random() * 100}vh`; // Random vertical position
+
+    // Alternate direction: left-to-right or right-to-left
+    const isFromLeft = Math.random() > 0.5;
+    if (isFromLeft) {
+      fogBlob.style.left = `-${size}px`; // Start off-screen to the left
+      fogBlob.style.animation = `fogDriftRight ${Math.random() * 20 + 15}s linear infinite, fogMorph ${Math.random() * 5 + 5}s ease-in-out infinite`;
+    } else {
+      fogBlob.style.left = `100vw`; // Start off-screen to the right
+      fogBlob.style.animation = `fogDriftLeft ${Math.random() * 20 + 15}s linear infinite, fogMorph ${Math.random() * 5 + 5}s ease-in-out infinite`;
+    }
+
+    // Append to the animations container
+    animationsContainer.appendChild(fogBlob);
+  }
+}
+
 //Code for solar data box at the bottom of the page
 document.addEventListener("DOMContentLoaded", () => {
   const solarImg = document.getElementById("solar-data-img");
@@ -435,13 +480,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("Redirecting to Solar Data Source!");
   });
 });
-
-// Simulating weather condition (You can replace this with real weather data)
-//updateWeatherAnimation('rain');       // Rain animation
-//updateWeatherAnimation('snow');       // Snow animation
-//updateWeatherAnimation('cloudy');     // Cloud animation
-//updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
-
 
 // Initial fetch with a default city
 fetchForecast('Bremerton'); // Example default city
