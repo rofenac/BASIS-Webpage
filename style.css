@@ -7,8 +7,15 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
-  width: 80%;
-  margin:auto;
+  width: 100%;
+  height: 100vh;
+  margin:0;
+  overflow: hidden;
+}
+
+header, main, footer {
+  position: relative;
+  z-index: 10; /* Below animations but above background */
 }
 
 /* Start of Nav bar */
@@ -16,52 +23,84 @@ body {
 #navbar {
   margin: auto;
   width: 100%;
-  padding-top: 1em;
+  background: linear-gradient(135deg, #5f72be, #9b23ea);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Add depth */
+  border-radius: 12px; /* Rounded corners for a modern feel */
+  padding: 0.5em 1em;
 }
 
+/* Navbar Items */
 #navbar ul {
   list-style-type: none;
   padding-left: 0;
   display: flex;
-  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0;
 }
 
 #navbar ul li {
-  flex-basis: 25%;
   text-align: center;
-  display: block;
-  padding: 0;
-  text-decoration: none;
-  background-color: #333;
-  font-size: 1em;
-  font-weight: bold;
-  border-right: 2px solid #f0f0f0;
+  flex: 1;
 }
 
+/* Navbar Links */
 #navbar ul li a {
-  text-align: center;
-  display: block;
-  padding: 2% 0;
+  display: inline-block;
   text-decoration: none;
-  background-color: #333;
-  color: #f0f0f0;
+  color: white;
+  font-size: 1.2em;
   font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px; /* Slight rounding for buttons */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3); /* Subtle depth for text */
 }
 
 #navbar ul li a:hover {
-  color: rgb(212, 67, 67);
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent hover effect */
+  transform: scale(1.1); /* Slight pop-out on hover */
+  color: white;
 }
 
 #unit-toggle {
-  width: 100%;
-  height: 100%;
-  font-size: 1.5em;
+  background-color: #3a7bd5; /* Matching blue gradient */
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3); /* Depth for button text */
+}
+
+#unit-toggle:hover {
+  background-color: #3a6073; /* Darker blue for hover effect */
+  transform: scale(1.05); /* Subtle pop-out effect */
+}
+
+/* Search Box */
+#city-search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 #city-search {
-  font-size: 1.5em;
-  width: 100%;
-  height: 100%;
+  font-size: 1em;
+  padding: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.4); /* Subtle border */
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#city-search:focus {
+  border-color: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6); /* Glow effect */
 }
 
 /* End of Nav bar */
@@ -105,25 +144,76 @@ main {
 .forecast {
   margin-top: 20px;
   width: 100%;
-  background-color: #e0e0e0;
+  background: linear-gradient(135deg, #5f72be, #9b23ea); /* Cool purple-blue gradient */
   padding: 20px;
-  margin-top: 3em;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
+  color: white;
+  text-align: center;
+  overflow: hidden; /* Ensure content fits inside */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.forecast:hover {
+  transform: scale(1.02); /* Slight scale effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhance shadow on hover */
+}
+
+/* Forecast Title */
+.forecast h3 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); /* Depth for the title text */
+  font-weight: bold;
+  letter-spacing: 1px; /* Slight letter spacing for elegance */
+}
+
+/* Forecast Grid Items */
 .forecast-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-top: 10px;
+  gap: 15px;
 }
 
 .forecast-item {
-  background-color: #e0e0e0;
-  padding: 10px;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #3a7bd5, #3a6073); /* Cool blue gradient for items */
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Depth for each item */
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+}
+
+.forecast-item:hover {
+  transform: scale(1.1); /* Pop-out effect on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.forecast-item img {
+  width: 60px; /* Larger, clearer icons */
+  height: auto;
+  margin: 10px 0;
+  border-radius: 50%; /* Rounded icons for visual appeal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Depth for the icons */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forecast-item img:hover {
+  transform: scale(1.2); /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+/* Forecast Text */
+.forecast-item p {
+  margin: 5px 0;
+  font-size: 1em;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); /* Subtle depth for text */
+}
+
+.forecast-item p:first-of-type {
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 footer {
@@ -143,7 +233,276 @@ footer {
   color: red;
   font-size: 0.9em;
   margin-top: 5px;
-  max-width: 100%; 
-  display: block; /* Ensures it appears on a new line below the input */
-  white-space: normal; /* Allow text to wrap to the next line */
+  text-shadow: none; /* Avoid text shadow on error messages */
+}
+
+/* Background container - Ensure it covers the entire viewport and is above other elements */
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* Lowest z-index for the background */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+#animations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100; /* Above all other elements */
+  pointer-events: none; /* Allow interactions with underlying elements */
+}
+
+/* Ensure animations layer properly */
+.lightning,
+.raindrop,
+.snowflake,
+.cloud,
+.fog {
+  position: absolute;
+  z-index: 100; /* Make sure animations are above everything else */
+  pointer-events: none; /* Prevent blocking interactions */
+}
+
+/* Rain animation */
+.raindrop {
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  animation: rain 0.5s linear infinite;
+}
+
+@keyframes rain {
+  0% {
+    top: -20px; /* Start slightly above the screen */
+    opacity: 1;
+  }
+  100% {
+    top: 100vh; /* Move to the bottom of the viewport */
+    opacity: 0.3;
+  }
+}
+
+/* Snow animation */
+.snowflake {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  animation: snow 2s linear infinite;
+}
+
+@keyframes snow {
+  0% {
+    top: -20px; /* Start slightly above the screen */
+    opacity: 1;
+  }
+  100% {
+    top: 100vh; /* Move to the bottom of the viewport */
+    opacity: 0.7;
+  }
+}
+
+/* Cloud animation */
+.cloud {
+  position: absolute;
+  border-radius: 50%; /* Rounded edges for cloud appearance */
+  opacity: 0.7;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+@keyframes moveCloudsRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(110vw); /* Move completely off-screen to the right */
+  }
+}
+
+@keyframes moveCloudsLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-110vw); /* Move completely off-screen to the left */
+  }
+}
+
+/* Lightning bolt segments */
+.lightning {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.9); /* Glow effect */
+  z-index: 200;
+  pointer-events: none;
+}
+
+@keyframes lightning {
+  0% {
+    top: 0; /* Start at the top */
+    opacity: 1;
+  }
+  100% {
+    top: 100vh; /* Extend to the bottom of the viewport */
+    opacity: 0.3;
+  }
+}
+
+/* Lightning flash effect */
+.lightning-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 101; /* Above other animations */
+  pointer-events: none; /* Ensure interactions aren't blocked */
+  animation: flashCycle 0.5s ease-in-out;
+}
+
+@keyframes lightning-flash {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes flashCycle {
+  0% {
+    background-color: white;
+    opacity: 1;
+  }
+  25% {
+    background-color: gray;
+    opacity: 0.8;
+  }
+  50% {
+    background-color: black;
+    opacity: 0.6;
+  }
+  75% {
+    background-color: gray;
+    opacity: 0.8;
+  }
+  100% {
+    background-color: white;
+    opacity: 1;
+  }
+}
+
+/* Fog animation */
+.fog-blob {
+  position: absolute;
+  background: radial-gradient(circle, rgba(200, 200, 200, 0.4), rgba(200, 200, 200, 0));
+  border-radius: 50%; /* Smooth edges */
+  pointer-events: none; /* Prevent interactions */
+  animation: fogMorph infinite ease-in-out, fogDrift infinite linear; /* Morphing and drifting effects */
+}
+
+/* Morphing effect for roiling blobs */
+@keyframes fogMorph {
+  0% {
+    clip-path: circle(50% at 50% 50%);
+  }
+  25% {
+    clip-path: ellipse(70% 50% at 60% 50%);
+  }
+  50% {
+    clip-path: circle(60% at 40% 60%);
+  }
+  75% {
+    clip-path: ellipse(50% 70% at 50% 40%);
+  }
+  100% {
+    clip-path: circle(50% at 50% 50%);
+  }
+}
+
+/* Drift from right to left */
+@keyframes fogDriftLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-120vw); /* Drift off to the left */
+  }
+}
+
+/* Drift from left to right */
+@keyframes fogDriftRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(120vw); /* Drift off to the right */
+  }
+}
+
+/* Styling for Weather Info */
+.weather-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient for depth */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  color: white; /* Contrast for text */
+}
+
+.city-name,
+.weather-stats, .temperature {
+  flex: 1;
+  text-align: center;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Subtle text depth */
+}
+
+/* Other general styles */
+footer {
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+#solar-data-container {
+  text-align: center;
+  background: linear-gradient(135deg, #43cea2, #185a9d); /* Cool gradient for balance */
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Depth effect */
+  margin: 20px auto;
+  max-width: fit-content;
+  border: 2px solid rgba(255, 255, 255, 0.4); /* Transparent border for subtle effect */
+  color: white;
+}
+
+#solar-data-container img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Add depth to the image */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#solar-data-container img:hover {
+  transform: scale(1.05); /* Slight enlargement on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhance shadow on hover */
+}
+
+#solar-data-loader {
+  color: #fff;
+  font-size: 1.2em;
+  display: none;
 }

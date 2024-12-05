@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="background"></div>
+  <div id="animations"></div>
   <header>
     <nav id="navbar">
       <ul>
@@ -22,7 +24,7 @@
           <li>
             <div id="city-search-container">
               <input type="text" id="city-search" placeholder="Search for Cities">
-              <p id="error-message"></p> <!-- Error message element added -->
+              <p id="error-message"></p>
             </div>
           </li>
       </ul>
@@ -54,7 +56,12 @@
   </main>
 
   <footer>
-    <p>Footer</p>
+    <div id="solar-data-container">
+      <div id="solar-data-loader">Loading Solar Data...</div>
+      <a href="https://www.hamqsl.com/solar.html" id="solar-link">
+        <img id="solar-data-img" src="https://www.hamqsl.com/solar101sc.php" alt="Solar Terrestrial Data">
+      </a>
+    </div>
   </footer>
   <script src="app.js"></script>
 </body>
