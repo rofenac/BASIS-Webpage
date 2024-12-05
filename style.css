@@ -11,6 +11,11 @@ body {
   margin:auto;
 }
 
+header, main, footer {
+  position: relative; /* Ensure elements layer correctly */
+  z-index: 10; /* Above background and animations */
+}
+
 /* Start of Nav bar */
 
 #navbar {
@@ -164,56 +169,54 @@ body {
   overflow: hidden;
 }
 
+/* Background container - Ensure it covers the entire viewport and is above other elements */
 #background {
-  position: fixed;
+  position: fixed; /* Ensures the background covers the viewport */
   top: 0;
   left: 0;
-  width: 100vw; /* Full width of the viewport */
-  height: 100vh; /* Full height of the viewport */
-  z-index: -1;
-  background-size: cover; /* Ensure the image covers the entire container */
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  z-index: -1; /* Set behind the main content */
+  background-size: cover; /* Scale the image to cover the entire area */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent tiling */
-  background-color: #87CEEB; /* Default sky color */
-  transition: background 1s ease;
+  overflow: hidden; /* Prevent overflow of animated elements */
 }
 
-/* Animation for Rain */
-@keyframes rain {
-  0% {
-    top: -50px;
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0.3;
-  }
+/* Ensure animations layer properly */
+.lightning,
+.raindrop,
+.snowflake,
+.cloud,
+.fog {
+  position: absolute;
+  z-index: 1; /* Layer above the background but below content */
+  pointer-events: none; /* Prevent blocking interactions */
 }
 
+/* Rain animation */
 .raindrop {
   position: absolute;
   width: 2px;
   height: 20px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
   animation: rain 0.5s linear infinite;
 }
 
-/* Animation for Snow */
-@keyframes snow {
+@keyframes rain {
   0% {
-    top: -50px;
+    top: -20px; /* Start slightly above the screen */
     opacity: 1;
   }
   100% {
-    top: 100%;
-    opacity: 0.6;
+    top: 100vh; /* Move to the bottom of the viewport */
+    opacity: 0.3;
   }
 }
 
+/* Snow animation */
 .snowflake {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   width: 8px;
   height: 8px;
   background-color: white;
@@ -221,70 +224,89 @@ body {
   animation: snow 2s linear infinite;
 }
 
-/* Animation for Lightning */
-@keyframes lightning {
+@keyframes snow {
   0% {
+    top: -20px; /* Start slightly above the screen */
+    opacity: 1;
+  }
+  100% {
+    top: 100vh; /* Move to the bottom of the viewport */
+    opacity: 0.7;
+  }
+}
+
+/* Cloud animation */
+.cloud {
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: moveClouds 30s linear infinite;
+}
+
+@keyframes moveClouds {
+  0% {
+    left: -200px; /* Start off-screen to the left */
+  }
+  100% {
+    left: 100vw; /* Move off-screen to the right */
+  }
+}
+
+/* Lightning bolt segments */
+.lightning {
+  position: absolute;
+  width: 6px; /* Thicker for better visibility */
+  background-color: rgba(255, 255, 255, 0.9); /* Bright white */
+  box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.8); /* Glow effect */
+  z-index: 2; /* Ensure it's above animations and background */
+  pointer-events: none; /* Allow interactions with underlying elements */
+}
+
+/* Lightning flash effect */
+.lightning-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 3; /* Above all elements */
+  animation: lightning-flash 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes lightning-flash {
+  0%, 100% {
     opacity: 0;
   }
   50% {
     opacity: 1;
   }
-  100% {
-    opacity: 0;
-  }
 }
 
-.lightning {
-  position: absolute;
-  width: 2px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  animation: lightning 0.3s linear infinite;
-  pointer-events: none;
-}
-
-/* Animation for Cloud Movement */
-@keyframes moveClouds {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-.cloud {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  width: 200px;
-  height: 100px;
-  background-color: white;
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: moveClouds 30s linear infinite;
-}
-
-/* Fog Effect */
+/* Fog effect */
 .fog {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.3);
   animation: fog 10s infinite;
 }
 
 @keyframes fog {
   0% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.6;
   }
   100% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 }
 

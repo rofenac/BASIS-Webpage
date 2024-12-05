@@ -189,24 +189,23 @@ function displayForecast(forecastDays) {
 
 // Function to update the background based on weather condition
 function updateBackground(weatherCode) {
-  const backgroundElement = document.getElementById('background');
   let backgroundImage = '';
 
-  // Example: Based on weather codes, set the background image
+  // Set background image based on weather code
   if (weatherCode >= 200 && weatherCode <= 299) {
-    backgroundImage = 'url("images/thunderstorm.jpg")';  // Thunderstorm image
+    backgroundImage = 'url("images/thunderstorm.jpg")';
   } else if (weatherCode >= 300 && weatherCode <= 399) {
-    backgroundImage = 'url("images/rain.jpg")';  // Rain image
+    backgroundImage = 'url("images/rain.jpg")';
   } else if (weatherCode >= 500 && weatherCode <= 599) {
-    backgroundImage = 'url("images/rain.jpg")';  // Rain image
+    backgroundImage = 'url("images/rain.jpg")';
   } else if (weatherCode >= 600 && weatherCode <= 699) {
-    backgroundImage = 'url("images/snow.jpg")';  // Snow image
+    backgroundImage = 'url("images/snow.jpg")';
   } else if (weatherCode >= 700 && weatherCode <= 799) {
-    backgroundImage = 'url("images/fog.jpg")';  // Fog image
+    backgroundImage = 'url("images/fog.jpg")';
   } else if (weatherCode === 800) {
-    backgroundImage = 'url("images/clear-sky.jpg")';  // Clear sky image
+    backgroundImage = 'url("images/clear-sky.jpg")';
   } else if (weatherCode >= 801 && weatherCode <= 804) {
-    backgroundImage = 'url("images/cloudy.jpg")';  // Cloudy image
+    backgroundImage = 'url("images/cloudy.jpg")';
   }
 
   // Apply the background image
@@ -216,8 +215,7 @@ function updateBackground(weatherCode) {
 // Function to update weather animations
 function updateWeatherAnimation(weatherCondition) {
   // Clear existing animations
-  backgroundElement.className = '';  // Reset the background class
-  backgroundElement.innerHTML = ''; // Clear dynamic elements like raindrops, snowflakes, etc.
+  backgroundElement.innerHTML = ''; // Clear dynamic elements
 
   // Apply the animation based on the current weather condition
   switch (weatherCondition) {
@@ -238,7 +236,7 @@ function updateWeatherAnimation(weatherCondition) {
       createClouds();
       break;
     case 'clearSky':
-      // No additional animations, just a clear background
+      // No animations for clear skies
       break;
     default:
       console.warn('Unknown weather condition:', weatherCondition);
@@ -248,11 +246,12 @@ function updateWeatherAnimation(weatherCondition) {
 // Function to create rain effect
 function createRain() {
   const numberOfRaindrops = 100;
+
   for (let i = 0; i < numberOfRaindrops; i++) {
     const raindrop = document.createElement('div');
     raindrop.classList.add('raindrop');
-    raindrop.style.left = `${Math.random() * 100}%`;
-    raindrop.style.animationDuration = `${Math.random() * 1 + 0.5}s`; // Random speed for each raindrop
+    raindrop.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+    raindrop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`; // Random speed
     backgroundElement.appendChild(raindrop);
   }
 }
@@ -260,41 +259,100 @@ function createRain() {
 // Function to create snow effect
 function createSnow() {
   const numberOfSnowflakes = 50;
+
   for (let i = 0; i < numberOfSnowflakes; i++) {
     const snowflake = document.createElement('div');
     snowflake.classList.add('snowflake');
-    snowflake.style.left = `${Math.random() * 100}%`;
-    snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random speed for each snowflake
+    snowflake.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+    snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random speed
     backgroundElement.appendChild(snowflake);
   }
 }
 
 // Function to create lightning effect
 function createLightning() {
-  const lightning = document.createElement('div');
-  lightning.classList.add('lightning');
-  lightning.style.left = `${Math.random() * 100}%`;
-  backgroundElement.appendChild(lightning);
-  setInterval(() => {
-    lightning.style.animationDuration = `${Math.random() * 0.5 + 0.3}s`;
-  }, 1000);  // Update lightning flash interval
+  const lightningFlashes = Math.floor(Math.random() * 4) + 2; // Number of flashes per storm
+
+  for (let i = 0; i < lightningFlashes; i++) {
+    setTimeout(() => {
+      const startX = Math.random() * window.innerWidth; // Random start point
+      const path = generateLightningPath(startX);
+
+      // Create and render each segment of the lightning bolt
+      path.forEach(segment => {
+        const segmentElement = document.createElement('div');
+        segmentElement.classList.add('lightning');
+        segmentElement.style.left = `${segment.x}px`;
+        segmentElement.style.top = `${segment.y}px`;
+        segmentElement.style.height = `${segment.height}px`;
+        segmentElement.style.transform = `rotate(${segment.angle}deg)`;
+        document.body.appendChild(segmentElement);
+
+        // Remove the segment after a short delay
+        setTimeout(() => {
+          segmentElement.remove();
+        }, 300);
+      });
+
+      // Add a bright flash effect
+      flashScreen();
+    }, i * (Math.random() * 1000 + 500)); // Randomized delay between flashes
+  }
+}
+
+// Generate a lightning path spanning the entire screen
+function generateLightningPath(startX) {
+  const segments = [];
+  let currentX = startX;
+  let currentY = 0; // Always start at the top
+
+  for (let i = 0; i < 15; i++) { // Create 15 segments for the lightning
+    const nextX = currentX + (Math.random() - 0.5) * 200; // Random horizontal deviation
+    const nextY = currentY + Math.random() * 80; // Progress downward
+
+    const angle = Math.atan2(nextY - currentY, nextX - currentX) * (180 / Math.PI); // Calculate angle
+    const height = Math.sqrt((nextX - currentX) ** 2 + (nextY - currentY) ** 2); // Segment length
+
+    segments.push({ x: currentX, y: currentY, height, angle });
+
+    currentX = nextX;
+    currentY = nextY;
+
+    // Stop if the bolt reaches the bottom of the screen
+    if (currentY > window.innerHeight) break;
+  }
+
+  return segments;
+}
+
+// Flash the entire screen during lightning strikes
+function flashScreen() {
+  const flash = document.createElement('div');
+  flash.classList.add('lightning-flash');
+  document.body.appendChild(flash);
+
+  setTimeout(() => flash.remove(), 200); // Remove flash after animation
 }
 
 // Function to create cloud movement
 function createClouds() {
   const numberOfClouds = 5;
+
   for (let i = 0; i < numberOfClouds; i++) {
     const cloud = document.createElement('div');
     cloud.classList.add('cloud');
-    cloud.style.top = `${Math.random() * 20 + 10}%`;
-    cloud.style.left = `${Math.random() * 100}%`;
+    cloud.style.top = `${Math.random() * 50}vh`; // Random vertical position
+    cloud.style.animationDuration = `${Math.random() * 20 + 20}s`; // Random speed
     backgroundElement.appendChild(cloud);
   }
 }
 
 // Simulating weather condition (You can replace this with real weather data)
-const simulatedWeather = 'cloudy'; // For example, rain
-updateWeatherAnimation(simulatedWeather);
+updateWeatherAnimation('rain');       // Rain animation
+//updateWeatherAnimation('snow');       // Snow animation
+//updateWeatherAnimation('cloudy');     // Cloud animation
+//updateWeatherAnimation('thunderstorm'); // Thunderstorm animation
+
 
 // Initial fetch with a default city
 fetchForecast('Bremerton'); // Example default city
