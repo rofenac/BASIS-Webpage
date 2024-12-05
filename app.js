@@ -191,32 +191,43 @@ function displayForecast(forecastDays) {
 // Function to update the background based on weather condition
 function updateBackground(weatherCode) {
   let backgroundImage = '';
+  let weatherCondition = '';
 
-  // Set background image based on weather code
+  // Determine background and weather condition based on weather code
   if (weatherCode >= 200 && weatherCode <= 299) {
     backgroundImage = 'url("images/thunderstorm.jpg")';
+    weatherCondition = 'thunderstorm';
   } else if (weatherCode >= 300 && weatherCode <= 399) {
     backgroundImage = 'url("images/rain.jpg")';
+    weatherCondition = 'rain';
   } else if (weatherCode >= 500 && weatherCode <= 599) {
     backgroundImage = 'url("images/rain.jpg")';
+    weatherCondition = 'rain';
   } else if (weatherCode >= 600 && weatherCode <= 699) {
     backgroundImage = 'url("images/snow.jpg")';
+    weatherCondition = 'snow';
   } else if (weatherCode >= 700 && weatherCode <= 799) {
     backgroundImage = 'url("images/fog.jpg")';
+    weatherCondition = 'fog';
   } else if (weatherCode === 800) {
     backgroundImage = 'url("images/clear-sky.jpg")';
+    weatherCondition = 'clearSky';
   } else if (weatherCode >= 801 && weatherCode <= 804) {
     backgroundImage = 'url("images/cloudy.jpg")';
+    weatherCondition = 'cloudy';
   }
 
   // Apply the background image
   backgroundElement.style.backgroundImage = backgroundImage;
+
+  // Trigger the appropriate animation
+  updateWeatherAnimation(weatherCondition);
 }
 
 // Function to update weather animations
 function updateWeatherAnimation(weatherCondition) {
   // Clear existing animations
-  backgroundElement.innerHTML = ''; // Clear dynamic elements
+  clearAnimations();
 
   // Apply the animation based on the current weather condition
   switch (weatherCondition) {
@@ -241,6 +252,14 @@ function updateWeatherAnimation(weatherCondition) {
       break;
     default:
       console.warn('Unknown weather condition:', weatherCondition);
+  }
+}
+
+// Function to clear existing animations
+function clearAnimations() {
+  // Remove all child elements from the animations container
+  while (animationsContainer.firstChild) {
+    animationsContainer.removeChild(animationsContainer.firstChild);
   }
 }
 
