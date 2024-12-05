@@ -7,6 +7,15 @@ const weatherIconElement = document.getElementById('weather-icon');
 const descriptionElement = document.getElementById('description');
 const errorMessageElement = document.getElementById('error-message');
 const dateElement = document.getElementById('date');
+const backgroundElement = document.getElementById('background');
+const weatherConditions = {
+  thunderstorm: 'thunderstorm',
+  rain: 'rain',
+  snow: 'snow',
+  fog: 'fog',
+  cloudy: 'cloudy',
+  clearSky: 'clear-sky',
+};
 
 let unit = 'imperial'; // Globally defined unit for the F/C toggle button
 
@@ -203,6 +212,89 @@ function updateBackground(weatherCode) {
   // Apply the background image
   backgroundElement.style.backgroundImage = backgroundImage;
 }
+
+// Function to update weather animations
+function updateWeatherAnimation(weatherCondition) {
+  // Clear existing animations
+  backgroundElement.className = '';  // Reset the background class
+  backgroundElement.innerHTML = ''; // Clear dynamic elements like raindrops, snowflakes, etc.
+
+  // Apply the animation based on the current weather condition
+  switch (weatherCondition) {
+    case 'thunderstorm':
+      createLightning();
+      createRain();
+      break;
+    case 'rain':
+      createRain();
+      break;
+    case 'snow':
+      createSnow();
+      break;
+    case 'fog':
+      createFog();
+      break;
+    case 'cloudy':
+      createClouds();
+      break;
+    case 'clearSky':
+      // No additional animations, just a clear background
+      break;
+    default:
+      console.warn('Unknown weather condition:', weatherCondition);
+  }
+}
+
+// Function to create rain effect
+function createRain() {
+  const numberOfRaindrops = 100;
+  for (let i = 0; i < numberOfRaindrops; i++) {
+    const raindrop = document.createElement('div');
+    raindrop.classList.add('raindrop');
+    raindrop.style.left = `${Math.random() * 100}%`;
+    raindrop.style.animationDuration = `${Math.random() * 1 + 0.5}s`; // Random speed for each raindrop
+    backgroundElement.appendChild(raindrop);
+  }
+}
+
+// Function to create snow effect
+function createSnow() {
+  const numberOfSnowflakes = 50;
+  for (let i = 0; i < numberOfSnowflakes; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    snowflake.style.left = `${Math.random() * 100}%`;
+    snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random speed for each snowflake
+    backgroundElement.appendChild(snowflake);
+  }
+}
+
+// Function to create lightning effect
+function createLightning() {
+  const lightning = document.createElement('div');
+  lightning.classList.add('lightning');
+  lightning.style.left = `${Math.random() * 100}%`;
+  backgroundElement.appendChild(lightning);
+  setInterval(() => {
+    lightning.style.animationDuration = `${Math.random() * 0.5 + 0.3}s`;
+  }, 1000);  // Update lightning flash interval
+}
+
+// Function to create cloud movement
+function createClouds() {
+  const numberOfClouds = 5;
+  for (let i = 0; i < numberOfClouds; i++) {
+    const cloud = document.createElement('div');
+    cloud.classList.add('cloud');
+    cloud.style.top = `${Math.random() * 20 + 10}%`;
+    cloud.style.left = `${Math.random() * 100}%`;
+    backgroundElement.appendChild(cloud);
+  }
+}
+
+// Simulating weather condition (You can replace this with real weather data)
+const simulatedWeather = 'cloudy'; // For example, rain
+updateWeatherAnimation(simulatedWeather);
 
 // Initial fetch with a default city
 fetchForecast('Bremerton'); // Example default city
