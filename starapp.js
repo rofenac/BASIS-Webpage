@@ -232,7 +232,6 @@ async function fetchWeatherData(location) {
             document.getElementById('description').textContent = data.weather[0].description;
             document.getElementById('cloudCoverage').textContent = `${data.clouds.all}`;
             document.getElementById('temp').textContent = data.main.temp
-            document.getElementById('elevation').textContent = data.main.pressure; // Using pressure as a substitute
             document.getElementById('humidity').textContent = data.main.humidity;
             document.getElementById('sunsetTime').textContent = new Date(data.sys.sunset * 1000).toLocaleTimeString();
         } else {
