@@ -17,34 +17,33 @@
             <li>
                 <h2><a href="stargazing.html">Stargazing</a></h2>
             </li>
+            <li>
+                <div id="locationPrompt">
+                    <label for="locationInput">Enter your location:</label><br>
+                    <input type="text" id="locationInput" maxlength="30" required>
+                    <button id="searchButton">Search</button>
+                </div>
+            </li>
         </ul>
     </nav>
 </header>
     <!-- Main Content Wrapper with search and stats sections -->
     <div class="main-container">
-        <!-- Left Section for Search -->
-        <div class="left-section">
-            <div id="locationPrompt">
-                <label for="locationInput">Enter your location:</label><br>
-                <input type="text" id="locationInput" maxlength="30" required>
-                <button id="searchButton">Search</button>
-            </div>
-            <div id="checkingConditions">Checking Stargazing Conditions...</div>
-            <div id="message"></div>
-        </div>
-
-        <!-- Right Section for Stats -->
-        <div class="right-section" class="Weather-info">
-            <h1 id="locationname">Stargazing Conditions</h1>
-        <div class="class" id="loading"></div>
-            <div class="stat">
-                <span id="temp"></span> degrees <br>
-                <span id="description"></span><br>
-                <span id="cloudCoverage"></span>%
-            </div>
-            <div class="stat">Elevation: <span id="elevation">Loading...</span> </div>
+        <h1 id="locationname">Stargazing Conditions</h1>
+        <div id="checkingConditions">Checking Stargazing Conditions...</div>
+                <div id="message"></div>
+        <!-- Right Section (Stats) -->
+        <div class="right-section">
+            <div class="stat">Temperature: <span id="temp">Loading...</span> degrees</div>
+            <div class="stat">Description: <span id="description">Loading...</span></div>
+            <div class="stat">Cloud Coverage: <span id="cloudCoverage">Loading...</span>%</div>
+            <div class="stat">Pressure: <span id="elevation">Loading...</span></div>
             <div class="stat">Humidity: <span id="humidity">Loading...</span>%</div>
             <div class="stat">Sunset Time: <span id="sunsetTime">Loading...</span></div>
+        </div>
+    </div>
+    
+            
         </div>
     </div>
 
