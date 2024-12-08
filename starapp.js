@@ -182,7 +182,7 @@ function resetStargazingConditions() {
     document.getElementById('humidity').textContent = 'Loading...';
     document.getElementById('sunsetTime').textContent = 'Loading...';
 
-    // Clear any running intervals
+    // Clear any running intervals 
     clearInterval(starCreationInterval);
     clearInterval(meteorCreationInterval);
 
