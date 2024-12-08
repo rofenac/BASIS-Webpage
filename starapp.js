@@ -76,7 +76,6 @@ function createCloud() {
 }
 //End of cloud
 
-
 /* Creates a star in a random position on the screen */
 function createStar() {
     const star = document.createElement('div');
