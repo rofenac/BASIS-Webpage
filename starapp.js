@@ -179,7 +179,6 @@ function resetStargazingConditions() {
 
     // Hide or reset stats display
     document.getElementById('cloudCoverage').textContent = 'Loading...';
-    document.getElementById('elevation').textContent = 'Loading...';
     document.getElementById('humidity').textContent = 'Loading...';
     document.getElementById('sunsetTime').textContent = 'Loading...';
 
