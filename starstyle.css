@@ -63,48 +63,47 @@
     /* Removes the right border from the last navbar item */
     #navbar ul li:last-child {
         border-right: none;
+        background-color: none;
+        display: contents;
     }      
 
     /* Container that holds both the search and stats sections side by side */
     .main-container {
-        display: flex; /* Sets up a side-by-side (flex) layout */
-        position: relative;
-        z-index: 1; /* Ensures the container is above the stars background */
-        width: 100%;
-        height:100vh; /* Takes full viewport height */
-        background-color: transparent !important;
-        padding-top: 1em;
-    }
-
-    /* Styling for the left section (search area) */
-    .left-section {
-        flex: 1; /* Takes half of the container width */
-        padding: 20px;
         display: flex;
-        flex-direction: column;
-        justify-content: center; /* Centers content vertically */
-        border-right: 1px solid #444; /* Adds a divider line on the right side */
-        
-
+        flex-direction: column; /* Stack left and right sections vertically */
+        justify-content: flex-end; /* Push content to the bottom */
+        align-items: center; /* Center horizontally */
+        position: absolute;
+        bottom: 10%;
+        width: 100%;
+        height: 50%; /* Use the bottom half of the screen */
+        z-index: 1; /* Ensure content is above stars */
+        background: transparent; /* Ensure it doesn't obscure the background */
     }
+    
+    
 
     /* Styling for the right section (stats display) */
     .right-section {
-        flex: 1; /* Takes the other half of the container width */
+        width: 100%;
         padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        
-        text-align: left; /* Aligns text to the left */
-
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        grid-gap: 20px;
+        text-align: center; /* Center the text */
     }
+    
+    
 
     /* Styles for individual statistics entries */
     .stat {
-        margin: 10px 0;
+        margin: 10px;
+        margin-bottom: 1px;
         font-size: 1.2em;
+        height: 20%;
+        text-align: center; /* Optional, center-align text inside each stat */
     }
+    
 
     /* Styles for the search prompt label and input */
     #locationPrompt {
@@ -239,3 +238,4 @@
         pointer-events: none;
         transform: translate(-50%, -50%);
     }
+
