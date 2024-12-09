@@ -213,7 +213,14 @@ async function fetchWeatherData(location) {
             document.getElementById('cloudCoverage').textContent = `${data.clouds.all}`;
             document.getElementById('temp').textContent = data.main.temp
             document.getElementById('humidity').textContent = data.main.humidity;
-            document.getElementById('sunsetTime').textContent = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+            document.getElementById('sunsetTime').textContent = new Date(
+                (data.sys.sunset + data.timezone) * 1000
+            ).toLocaleTimeString('en-US', {
+                timeZone: 'UTC',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+            });            
 
             const weatherId = data.weather[0].id; // Extract weather ID
             updateStargazingConditions(weatherId); // Pass the weather ID to the update function
