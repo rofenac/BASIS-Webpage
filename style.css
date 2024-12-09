@@ -476,33 +476,3 @@ footer {
   padding: 10px;
   text-align: center;
 }
-
-#solar-data-container {
-  text-align: center;
-  background: linear-gradient(135deg, #43cea2, #185a9d); /* Cool gradient for balance */
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Depth effect */
-  margin: 20px auto;
-  max-width: fit-content;
-  border: 2px solid rgba(255, 255, 255, 0.4); /* Transparent border for subtle effect */
-  color: white;
-}
-
-#solar-data-container img {
-  max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Add depth to the image */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#solar-data-container img:hover {
-  transform: scale(1.05); /* Slight enlargement on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhance shadow on hover */
-}
-
-#solar-data-loader {
-  color: #fff;
-  font-size: 1.2em;
-  display: none;
-}
