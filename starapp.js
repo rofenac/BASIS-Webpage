@@ -13,8 +13,8 @@ document.body.appendChild(starCursor);
 
 // Function to update the star position on mouse move
 document.addEventListener('mousemove', (e) => {
-starCursor.style.left = `${e.pageX}px`;
-starCursor.style.top = `${e.pageY}px`;
+    starCursor.style.left = `${e.pageX}px`;
+    starCursor.style.top = `${e.pageY}px`;
 }); 
 //end of cursor                                
 
@@ -100,14 +100,12 @@ function createStar() {
 }
 //end of star
 
-
 /* Updates the stargazing conditions and toggles visibility of stars */
 function updateStargazingConditions() {
     const starsContainer = document.getElementById('stars');
     const checkingConditions = document.getElementById('checkingConditions');
     const message = document.getElementById('message');
     
-
     // Show checking message
     checkingConditions.style.display = "block";
     message.style.display = "none";
@@ -157,10 +155,8 @@ function updateStargazingConditions() {
             
             for (let i = 0; i < numberOfClouds; i++) {
                 createCloud();
-            }
-           
+            }  
         }
-
         // Show result message
         message.style.display = "block";
     }, 3000);
@@ -188,33 +184,30 @@ function resetStargazingConditions() {
     // Hide checking conditions message if visible
     const checkingConditions = document.getElementById('checkingConditions');
     checkingConditions.style.display = 'none';
-    
- }
+}
 
-/**
- * Adds an event listener to the search button to update conditions and stats
- */
- document.getElementById('searchButton').addEventListener('click', function() {
-    const location = document.getElementById('locationInput').value.trim();
+// Add keydown event listener for the Enter key
+document.getElementById('city-search-container').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        const location = event.target.value.trim();
 
-    if(!location) {
-        alert("Please enter a location.");
+        if (!location) {
+            alert("Please enter a location.");
+            return;
+        }
+
+        // Validate input length
+        if (location.length > 0 && location.length <= 30) {
+            resetStargazingConditions(); // Reset previous results
+            updateStargazingConditions(); // Update conditions for the new search
+            fetchWeatherData(location); // Fetch and display weather data
+        } else {
+            alert('Please enter a valid location (max 30 characters).'); // Alert if input is invalid
+        }
     }
+});
 
-    // Validate input length
-    if (location.length > 0 && location.length <= 30) {
-        resetStargazingConditions(); // Reset previous results
-        updateStargazingConditions(); // Update conditions for new search
-        fetchWeatherData(location);
-        return location;
-    } else {
-        alert('Please enter a valid location (max 12 characters).'); // Alert if input invalid
-    }
- })
-// Example weather API call (using OpenWeatherMap API for demonstration)
-// You will need to replace 'YOUR_API_KEY' with your actual API key.
-
-const apiKey = '41db8b032208cd83589ccd20529b4a91'; // Replace with your weather API key
+const apiKey = '38137b56cf796c2682119ac4af83a500'; // Replace with your weather API key
 const apiBaseUrl = 'https://api.openweathermap.org/data/2.5/';
 const city = `${location}`
 

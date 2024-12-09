@@ -18,10 +18,9 @@
                 <h2><a href="stargazing.html">Stargazing</a></h2>
             </li>
             <li>
-                <div id="locationPrompt">
-                    <label for="locationInput"></label><br>
-                    <input type="text" id="locationInput" maxlength="30" required>
-                    <button id="searchButton">Search</button>
+                <div id="city-search-container">
+                    <input type="text" id="city-search" placeholder="Search for Cities">
+                    <p id="error-message"></p>
                 </div>
             </li>
         </ul>
@@ -31,7 +30,7 @@
     <div class="main-container">
         <h1 id="locationname">Stargazing Conditions</h1>
         <div id="checkingConditions">Checking Stargazing Conditions...</div>
-                <div id="message"></div>
+            <div id="message"></div>
         <!-- Right Section (Stats) -->
         <div class="right-section">
             <div class="stat">Temperature: <span id="temp">Loading...</span> degrees</div>
@@ -41,15 +40,10 @@
             <div class="stat">Sunset Time: <span id="sunsetTime">Loading...</span></div>
         </div>
     </div>
-    
-            
-        </div>
-    </div>
-
     <!-- Stars Background Container -->
     <div class="stars" id="stars"></div>
     <div class= "meteor"  ></div>
     <div class="clouds" ></div>
     <script src="starapp.js"></script>
-    </body>
+</body>
 </html>
