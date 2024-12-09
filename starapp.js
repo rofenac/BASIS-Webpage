@@ -18,9 +18,9 @@ document.addEventListener('mousemove', (e) => {
 }); 
 //end of cursor                                
 
-/* Checks if it is a good day for stargazing (50% chance) */
-function isGoodStargazingDay() {
-    return Math.random() < 0.5;
+/* Checks if it is a good day for stargazing */
+function isGoodStargazingDay(weatherId) {
+    return weatherId === 800;
 }
 
 //Start of Meteor creation
@@ -101,65 +101,57 @@ function createStar() {
 //end of star
 
 /* Updates the stargazing conditions and toggles visibility of stars */
-function updateStargazingConditions() {
+function updateStargazingConditions(weatherId) {
     const starsContainer = document.getElementById('stars');
     const checkingConditions = document.getElementById('checkingConditions');
     const message = document.getElementById('message');
-    
-    // Show checking message
-    checkingConditions.style.display = "block";
-    message.style.display = "none";
-    starsContainer.style.display = "none";
 
-    // Simulate loading time for checking conditions
-    setTimeout(() => {
-        const goodDay = isGoodStargazingDay(); // Check if it's a good day
+    // Immediately hide checking message and update conditions
+    checkingConditions.style.display = "none";
 
-        // Hide checking message
-        checkingConditions.style.display = "none";
+    const goodDay = isGoodStargazingDay(weatherId); // Check if it's a good day
 
-        if (goodDay) {
-            message.textContent = "Good Day to Stargaze! 🌟";
-            starsContainer.style.display = "block"; // Show stars if a good day
-            //starsVisible = true;
-            
-            document.addEventListener('mousemove', function(e) {
-                let trail = document.createElement('div');
-                trail.className = 'mouse-trail';
-                trail.style.left = `${e.pageX}px`;
-                trail.style.top = `${e.pageY}px`;
-                document.body.appendChild(trail);
-                
-                setTimeout(() => {
+    if (goodDay) {
+        message.textContent = "Good Day to Stargaze! 🌟";
+        starsContainer.style.display = "block"; // Show stars if a good day
+
+        document.addEventListener('mousemove', function (e) {
+            let trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            trail.style.left = `${e.pageX}px`;
+            trail.style.top = `${e.pageY}px`;
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
                 trail.remove();
-                    }, 400); // Adjust the time for the trail to disappear
-            });     
+            }, 400); // Adjust the time for the trail to disappear
+        });
 
-            starCreationInterval = setInterval(() => {
-                for (let i = 0; i < 20; i++) {
-                    createStar();
-                }
-            }, 200);
+        starCreationInterval = setInterval(() => {
+            for (let i = 0; i < 20; i++) {
+                createStar();
+            }
+        }, 200);
 
-            meteorCreationInterval = setInterval(createMeteor, 100);
+        meteorCreationInterval = setInterval(createMeteor, 100);
 
-        } else {
-            message.textContent = "Not a Good Day to Stargaze. ☁️";
-            starsContainer.style.display = "block"; // Show stars if a good da
+    } else {
+        message.textContent = "Not a Good Day to Stargaze. ☁️";
+        starsContainer.style.display = "block"; // Show stars even if not a good day
 
-            starCreationInterval = setInterval(() => {
-                for (let i = 0; i < 10; i++) {
-                    createStar();
-                }
-            }, 200);
-            
-            for (let i = 0; i < numberOfClouds; i++) {
-                createCloud();
-            }  
+        starCreationInterval = setInterval(() => {
+            for (let i = 0; i < 10; i++) {
+                createStar();
+            }
+        }, 200);
+
+        for (let i = 0; i < numberOfClouds; i++) {
+            createCloud();
         }
-        // Show result message
-        message.style.display = "block";
-    }, 3000);
+    }
+
+    // Display the result message immediately
+    message.style.display = "block";
 }
 
 function resetStargazingConditions() {
@@ -199,7 +191,6 @@ document.getElementById('city-search-container').addEventListener('keydown', fun
         // Validate input length
         if (location.length > 0 && location.length <= 30) {
             resetStargazingConditions(); // Reset previous results
-            updateStargazingConditions(); // Update conditions for the new search
             fetchWeatherData(location); // Fetch and display weather data
         } else {
             alert('Please enter a valid location (max 30 characters).'); // Alert if input is invalid
@@ -215,8 +206,6 @@ async function fetchWeatherData(location) {
     try {
         const response = await fetch(`${apiBaseUrl}weather?q=${location}&appid=${apiKey}&units=imperial`);
         const data = await response.json();
-        console.log(response);
-        // Display the raw JSON response in the console
 
         if (data.cod == 200) { // Check if the location is valid
             document.getElementById('locationname').textContent = data.name;
@@ -225,8 +214,10 @@ async function fetchWeatherData(location) {
             document.getElementById('temp').textContent = data.main.temp
             document.getElementById('humidity').textContent = data.main.humidity;
             document.getElementById('sunsetTime').textContent = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+
+            const weatherId = data.weather[0].id; // Extract weather ID
+            updateStargazingConditions(weatherId); // Pass the weather ID to the update function
         } else {
-            console.log("Error:", data.message);
             alert(`City not found: ${data.message}. Please enter a valid city name.`);
         }
     } catch (error) { // This is the catch block

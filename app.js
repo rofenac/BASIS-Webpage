@@ -159,7 +159,7 @@ function displayForecast(forecastDays) {
 function updateBackground(weatherCode) {
   let backgroundImage = '';
   let weatherCondition = '';
-
+  
   // Determine background and weather condition based on weather code
   if (weatherCode >= 200 && weatherCode <= 299) {
     backgroundImage = 'url("images/thunderstorm.jpg")';
@@ -183,7 +183,7 @@ function updateBackground(weatherCode) {
     backgroundImage = 'url("images/cloudy.jpg")';
     weatherCondition = 'cloudy';
   }
-
+  
   // Apply the background image
   backgroundElement.style.backgroundImage = backgroundImage;
 
