@@ -60,7 +60,7 @@ function createCloud() {
 
     //Random width and height for more variation in shapes
     const width = Math.random() * 200 + 300; 
-    const height = Math.random() * 50 + 130;
+    const height = Math.random() * 80 + 130;
     cloud.style.width = `${width}px`;
     cloud.style.height = `${height}px`;
 
